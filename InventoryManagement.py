@@ -28,7 +28,7 @@ class OrderProcessor:
     def get_orders(self):
         excel_df = pandas.read_excel(self.path)
         for row in excel_df.iterrows():
-            yield Order(**row[1])
+            self.order_list.append(Order(**row[1]))
 
 
 class Order:
@@ -51,9 +51,13 @@ class Order:
         order_details = f"Order number: {self.order_number}\n" \
                         f"ID: {self.product_id}\n" \
                         f"Item type: {self.item_type}\n" \
-                        f"Item name: {self.name}\n" \
-                        f"Product details: {self.product_details}"
-        return '\n'.join([separator, order_details, separator])
+                        f"Item name: {self.name}\n\n" \
+                        f">>Product details<<"
+        product_details = ""
+        for key, value in self.product_details.items():
+            product_details += f"{key}: {value}\n"
+        return '\n'.join([separator, order_details,
+                          product_details, separator])
 
 
 class Store:
