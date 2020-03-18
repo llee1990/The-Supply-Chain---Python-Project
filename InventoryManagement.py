@@ -21,7 +21,6 @@ class OrderProcessor:
                     "Easter": InventoryFactories.CremeEggsFactory,
                     "Halloween": InventoryFactories.PCTFactory}}
 
-
     def __init__(self, path):
         self.path = path
         self.order_list = []
