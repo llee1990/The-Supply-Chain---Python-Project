@@ -6,7 +6,16 @@ from InventoryManagement import OrderProcessor, Order
 
 class UserMenu:
 
-    def __init__(self):
+    def __init__(self, path):
+        self.path = path
+
+    def process_web_orders(self):
+        pass
+
+    def check_inventory(self):
+        pass
+
+    def exit_program(self):
         pass
 
 
