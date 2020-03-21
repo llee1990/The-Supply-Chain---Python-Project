@@ -2,23 +2,13 @@
 
 """
 
-import abc
+from abc import ABC, abstractmethod
 
 
-class InventoryItems(abc.ABC):
+class Toys(ABC):
 
-    def __init__(self, name, description, product_id):
-        self.name = name
-        self.description = description
-        self.product_id = product_id
-
-
-class Toys(InventoryItems):
-
-    def __init__(self, has_batteries, min_age, **kwargs):
-        super().__init__(**kwargs)
-        self.has_batteries = has_batteries
-        self.min_age = min_age
+    def __init__(self):
+        pass
 
 
 class SantaWorkshop(Toys):
@@ -68,10 +58,10 @@ class RobotBunny(Toys):
         super().__init__(**kwargs)
 
 
-class StuffedAnimals(InventoryItems):
+class StuffedAnimals(ABC):
 
     def __init__(self):
-        super().__init__()
+        pass
 
 
 class DancingSkeletons(StuffedAnimals):
@@ -92,7 +82,7 @@ class EasterBunny(StuffedAnimals):
         super().__init__()
 
 
-class Candy(InventoryItems):
+class Candy(ABC):
 
     def __init__(self):
         pass
