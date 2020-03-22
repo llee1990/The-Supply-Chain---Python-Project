@@ -3,16 +3,13 @@
 """
 
 import pandas
-
-from InventoryFactories import ChristmasItemFactory, EasterItemFactory,\
-    HalloweenItemFactory
-from InventoryFactories import FactoryEnum
-from datetime import date
 import time
+from datetime import date
+from InventoryFactories import ChristmasItemFactory, EasterItemFactory,\
+    HalloweenItemFactory, FactoryEnum
 
 
 class OrderProcessor:
-
     factory_map = {
         FactoryEnum.EASTER: EasterItemFactory,
         FactoryEnum.CHRISTMAS: ChristmasItemFactory,
@@ -34,13 +31,13 @@ class OrderProcessor:
         for row in excel_df.iterrows():
             yield Order(**row[1])
 
-    # def get_order_history(self):
-    #     history = ""
-    #     for order in self.order_list:
-    #         history += f"Order {order.order_number}, Item {order.item_type}, "\
-    #             f"Product ID {order.product_id}, Name \"{order.name}\", " \
-    #             f"Quantity {order.product_details['quantity']}\n"
-    #     return history
+    def order_history(self):
+        history = ""
+        for order in self.order_list:
+            history += f"Order {order.order_number}, Item {order.item_type}, "\
+                f"Product ID {order.product_id}, Name \"{order.name}\", " \
+                f"Quantity {order.product_details['quantity']}\n"
+        return history
 
 
 class Order:
@@ -53,9 +50,8 @@ class Order:
         self.name = name
         self.holiday = holiday
         self.factory = OrderProcessor.factory_map[FactoryEnum(holiday)]()
-
         # Product details to instantiate Item objects
-        self.product_details = {"name": name, "product_id": product_id}
+        self.product_details = {'name': name, 'product_id': product_id}
         for arg, value in kwargs.items():
             if arg != "holiday" and not pandas.isnull(value):
                 self.product_details[arg] = value
@@ -92,33 +88,31 @@ class Store:
 
     def process_item(self, order):
         factory = order.factory
+        order_name = order.name
         new_item = factory.create_items(item_type=order.item_type,
                                         **order.product_details)
-        order_amount = order.product_details['quantity']
+        order_amount = int(order.product_details['quantity'])
 
         # item does not exist in inventory
-        if order not in self.inventory:
-            self.inventory[order] = [new_item for i
-                                in range(0, self.DEFAULT_ORDER_SIZE)]
+        if order_name not in self.inventory:
+            self.inventory[order_name] = [new_item for _
+                                          in range(self.DEFAULT_ORDER_SIZE)]
 
         # item quantity is less than the order amount
-        elif len(self.inventory[order]) < int(order.product_details[
-                                                   'quantity']):
+        elif len(self.inventory[order_name]) < order_amount:
             curr_quantity = int(len(self.inventory[order]))
-            self.inventory[order] = [new_item for i
-                                          in range(0, self.DEFAULT_ORDER_SIZE
+            self.inventory[order_name] = [new_item for _
+                                          in range(self.DEFAULT_ORDER_SIZE
                                                    + curr_quantity)]
 
         self.update_inventory_item(order, order_amount)
         # TODO: Add method to update order_history
 
     def get_order_history(self):
+        # TODO: implement
         history = ""
         for order in self.order_history:
             history += order.__str__()
-            # history += f"Order {order.order_number}, Item {order.item_type}, "\
-            #     f"Product ID {order.product_id}, Name \"{order.name}\", " \
-            #     f"Quantity {order.product_details['quantity']}\n"
         return history
 
     @staticmethod
