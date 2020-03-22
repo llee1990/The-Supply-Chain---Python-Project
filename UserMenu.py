@@ -13,7 +13,10 @@ class UserMenu:
         self.store = Store()
 
     def process_web_orders(self):
-        for order in self.order_processor.get_orders():
+        orders = self.order_processor.get_orders()
+        for order in orders:
+            self.order_processor.add_orders(order)
+        for order in self.order_processor.order_list:
             self.store.receive_order(order)
         print(f"\nSuccessfully processed "
               f"{len(self.order_processor.order_list)} "
@@ -30,7 +33,7 @@ class UserMenu:
                               'i',  # float (exponent)
                               ])
         for key, value in self.store.inventory.items():
-            row = [key.name]
+            row = [key]
             if len(value) == 0:
                 row.append("Out of Stock")
             elif 0 < len(value) < 3:
