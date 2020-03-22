@@ -18,9 +18,8 @@ class UserMenu:
             self.order_processor.add_orders(order)
         for order in self.order_processor.order_list:
             self.store.receive_order(order)
-
-        print(f"\nSuccessfully processed"
-              f" {len(self.order_processor.order_list)} "
+        print(f"\nSuccessfully processed "
+              f"{len(self.order_processor.order_list)} "
               f"orders...\n")
         self.order_processor.clear_order_list()
 
@@ -28,20 +27,20 @@ class UserMenu:
         table = texttable.Texttable()
         table.set_deco(table.HEADER)
         table.add_rows([["Name",    "Stock", "Quantity"]])
+        table.set_cols_align(["l", "r", "r"])
         table.set_cols_dtype(['t',  # text
                               't',  # float (decimal)
                               'i',  # float (exponent)
                               ])
-        table.set_cols_align(["l", "r", "r"])
         for key, value in self.store.inventory.items():
             row = [key.name]
             if len(value) == 0:
-                print(f"{key.name}: Out of Stock")
-            if 0 < len(value) < 3:
+                row.append("Out of Stock")
+            elif 0 < len(value) < 3:
                 row.append("Very Low")
-            if 3 < len(value) < 10:
+            elif 3 < len(value) < 10:
                 row.append("Low")
-            if len(value) > 10:
+            else:
                 row.append("In stock")
             row.append(len(value))
             table.add_row(row)
@@ -49,7 +48,6 @@ class UserMenu:
 
     def exit_program(self):
         print("Printing report...")
-        self.order_manager.create_report()
         self.store.create_report(self.order_processor)
         time.sleep(0.5)
         print("Exiting program...")
