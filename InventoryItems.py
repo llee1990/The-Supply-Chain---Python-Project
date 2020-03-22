@@ -14,10 +14,11 @@ class ItemEnum(Enum):
 
 class Item(ABC):
 
-    def __init__(self, name, description, product_id):
+    def __init__(self, name, description, product_id, quantity):
         self.name = name
         self.description = description
         self.product_id = product_id
+        self.quantity = quantity
 
 
 class Toy(Item):
@@ -30,9 +31,9 @@ class Toy(Item):
 
 class SantaWorkshop(Toy):
 
-    def __init__(self, has_batteries, dimensions, num_rooms, **kwargs):
-        if has_batteries.upper() != "N":
-            raise AttributeError
+    def __init__(self, dimensions, num_rooms, **kwargs):
+        # if has_batteries.upper() != "N":
+        #     raise AttributeError
         if num_rooms < 1:
             raise AttributeError
         super().__init__(**kwargs)
@@ -151,3 +152,18 @@ class CremeEggs(Candy):
             raise AttributeError
         super().__init__(**kwargs)
         self.pack_size = pack_size
+
+
+def main():
+    args = {'name': 'Santas Workshop - Essentials Edition', 'product_id':
+        'C1230T',
+     'quantity': 10,
+     'description': 'The most sought after christmas present! Get yours today!',
+     'has_batteries': 'N', 'min_age': 5.0, 'dimensions': '50,90',
+     'num_rooms': 4.0}
+    sw = SantaWorkshop(**args)
+    print(sw)
+
+
+if __name__ == "__main__":
+    main()
