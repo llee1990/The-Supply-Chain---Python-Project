@@ -93,7 +93,7 @@ class Store:
     def receive_order(self, order):
         self.get_item(order)
         for num in range(int(order.product_details['quantity'])):
-            self.inventory[order.name]
+            self.inventory[order.name].pop()
 
     def get_item(self, order):
         factory = order.factory
@@ -127,8 +127,9 @@ class Store:
         hour = time.strftime('%H', local_time)
         minute = time.strftime('%M', local_time)
         file_name = f"DTR_{day}{month}{year}_{hour}{minute}"
+        print(file_name)
         with open(f"{file_name}.txt", mode='w', encoding='utf-8') as file:
-            title = 'HOLIDAY STORE - DAILY TRANSACTION REPORT(DRT)\n'
+            title = 'HOLIDAY STORE - DAILY TRANSACTION REPORT(DRT)\n\n'
             date_time = f"{day}-{month}-{year} {hour}:{minute}\n"
             orders = orders.order_history()
             data = title + date_time + orders

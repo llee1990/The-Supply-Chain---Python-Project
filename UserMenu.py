@@ -17,6 +17,7 @@ class UserMenu:
             self.store.receive_order(order)
 
     def check_inventory(self):
+        print(self.store.inventory)
         for key, value in self.store.inventory.items():
             if len(value) == 0:
                 print(f"{key}: Out of Stock")
@@ -29,7 +30,7 @@ class UserMenu:
 
     def exit_program(self):
         print("Printing report...")
-        self.store.create_report()
+        self.store.create_report(self.order_processor)
         time.sleep(0.5)
         print("Exiting program...")
         time.sleep(0.5)
