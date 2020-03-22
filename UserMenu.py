@@ -34,7 +34,6 @@ class UserMenu:
         time.sleep(0.5)
         print("Exiting program...")
         time.sleep(0.5)
-        
 
 def execute_program():
     path = "orders.xlsx"
@@ -60,6 +59,8 @@ def execute_program():
             except ValueError:
                 continue
         menu_options[user_input]()
+        if user_input == 3:
+            break
 
 
 def main():
