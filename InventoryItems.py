@@ -3,6 +3,13 @@
 """
 
 from abc import ABC, abstractmethod
+from enum import Enum
+
+
+class ItemEnum(Enum):
+    TOY = "Toy"
+    STUFFED_ANIMAL = "StuffedAnimal"
+    CANDY = "Candy"
 
 
 class Item(ABC):
