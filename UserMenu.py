@@ -14,8 +14,7 @@ class UserMenu:
     def process_web_orders(self):
         orders = self.order_processor.get_orders()
         for order in orders:
-            self.order_processor.update_orders(order)
-
+            self.order_processor.add_orders(order)
         for order in self.order_processor.order_list:
             self.store.receive_order(order)
 

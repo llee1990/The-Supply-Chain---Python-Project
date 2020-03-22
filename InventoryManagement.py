@@ -27,10 +27,9 @@ class OrderProcessor:
     def get_orders(self):
         excel_df = pandas.read_excel(self.path)
         for row in excel_df.iterrows():
-            # self.order_list.append(Order(**row[1]))
             yield Order(**row[1])
 
-    def update_orders(self, order):
+    def add_orders(self, order):
         self.order_list.append(order)
 
     def order_history(self):
