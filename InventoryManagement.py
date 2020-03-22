@@ -6,7 +6,7 @@ import pandas
 
 from InventoryFactories import ChristmasItemFactory, EasterItemFactory,\
     HalloweenItemFactory
-from InventoryItems import ItemEnum
+from ErrorHandling import InvalidDataError
 from InventoryFactories import FactoryEnum
 from datetime import date
 import time
@@ -78,6 +78,7 @@ class Store:
 
     def __init__(self):
         self.inventory = {}
+        self.order_report = ""
 
     def receive_order(self, order):
         self.get_item(order)
@@ -89,17 +90,48 @@ class Store:
         if order not in self.inventory:
 
             # new code
-            new_item = factory.create_items(item_type=order.item_type,
-                                            **order.product_details)
-            self.inventory[order.name] = [new_item for i
-                                          in range(0, new_item.quantity)]
+            try:
+                new_item = factory.create_items(item_type=order.item_type,
+                                                **order.product_details)
+                self.order_history(order, new_item.error_message)
+                self.inventory[order.name] = []
+                for i in range(0, 100):
+                    self.inventory[order.name].append(new_item)
+            except InvalidDataError:
+                wrong_order = factory.create_items(item_type=order.item_type,
+                                                   **order.product_details)
+                self.order_history(order, wrong_order.error_message)
+
+
+            # for num in range(0, 100):
+            #     new_item = factory.create_items(item_type=order.item_type,
+            #                                 **order.product_details)
+            #     if new_item.error_message != '':
+            #         self.inventory[order.name]
+            # self.inventory[order.name] = [new_item for new_item
+            #                               in range(0, new_item.quantity)]
             # old code
             # self.inventory[item.name] = \
             #     [new_item for new_item in item.factory().create_items()]
 
-        elif len(self.inventory[order]) < int(order.product_details['quantity']):
+        elif len(self.inventory[order]) < \
+                int(order.product_details['quantity']):
             for new_item in order.factory().create_items():
                 self.inventory[order.name].append(new_item)
+
+    def order_history(self, order, error):
+        if error == '':
+            self.order_report += f"Order {order.order_number}, " \
+                                 f"Item {order.item_type}, " \
+                                 f"Product ID {order.product_id}, " \
+                                 f"Name \"{order.name}\", " \
+                                 f"Quantity " \
+                                 f"{order.product_details['quantity']}\n"
+        else:
+            self.order_report += f"Order {order.order_number}, " \
+                                 f"Could not process order, " \
+                                 f"data was corrupted." \
+                                 f">>{error}<<\n"
 
     @staticmethod
     def create_report(orders):
