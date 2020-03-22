@@ -6,7 +6,6 @@ import pandas
 
 from InventoryFactories import ChristmasItemFactory, EasterItemFactory,\
     HalloweenItemFactory
-from InventoryItems import ItemEnum
 from InventoryFactories import FactoryEnum
 from datetime import date
 import time
@@ -24,21 +23,24 @@ class OrderProcessor:
         self.path = path
         self.order_list = []
 
+    def add_orders(self, order):
+        self.order_list.append(order)
+
+    def clear_order_list(self):
+        self.order_list = []
+
     def get_orders(self):
         excel_df = pandas.read_excel(self.path)
         for row in excel_df.iterrows():
             yield Order(**row[1])
 
-    def add_orders(self, order):
-        self.order_list.append(order)
-
-    def order_history(self):
-        history = ""
-        for order in self.order_list:
-            history += f"Order {order.order_number}, Item {order.item_type}, "\
-                f"Product ID {order.product_id}, Name \"{order.name}\", " \
-                f"Quantity {order.product_details['quantity']}\n"
-        return history
+    # def get_order_history(self):
+    #     history = ""
+    #     for order in self.order_list:
+    #         history += f"Order {order.order_number}, Item {order.item_type}, "\
+    #             f"Product ID {order.product_id}, Name \"{order.name}\", " \
+    #             f"Quantity {order.product_details['quantity']}\n"
+    #     return history
 
 
 class Order:
@@ -50,12 +52,10 @@ class Order:
         self.item_type = item
         self.name = name
         self.holiday = holiday
-        self.product_details = {}
         self.factory = OrderProcessor.factory_map[FactoryEnum(holiday)]()
 
         # Product details to instantiate Item objects
-        self.product_details["name"] = name
-        self.product_details["product_id"] = product_id
+        self.product_details = {"name": name, "product_id": product_id}
         for arg, value in kwargs.items():
             if arg != "holiday" and not pandas.isnull(value):
                 self.product_details[arg] = value
@@ -76,30 +76,50 @@ class Order:
 
 class Store:
 
+    DEFAULT_ORDER_SIZE = 100
+
     def __init__(self):
         self.inventory = {}
+        self.order_history = []
 
     def receive_order(self, order):
-        self.get_item(order)
-        for num in range(int(order.product_details['quantity'])):
-            self.inventory[order.name].pop()
+        self.process_item(order)
 
-    def get_item(self, order):
+    def update_inventory_item(self, order, quantity):
+        while quantity != 0:
+            del self.inventory[order][-1]
+            quantity -= 1
+
+    def process_item(self, order):
         factory = order.factory
+        new_item = factory.create_items(item_type=order.item_type,
+                                        **order.product_details)
+        order_amount = order.product_details['quantity']
+
+        # item does not exist in inventory
         if order not in self.inventory:
+            self.inventory[order] = [new_item for i
+                                in range(0, self.DEFAULT_ORDER_SIZE)]
 
-            # new code
-            new_item = factory.create_items(item_type=order.item_type,
-                                            **order.product_details)
-            self.inventory[order.name] = [new_item for i
-                                          in range(0, new_item.quantity)]
-            # old code
-            # self.inventory[item.name] = \
-            #     [new_item for new_item in item.factory().create_items()]
+        # item quantity is less than the order amount
+        elif len(self.inventory[order]) < int(order.product_details[
+                                                   'quantity']):
+            curr_quantity = int(len(self.inventory[order]))
+            self.inventory[order] = [new_item for i
+                                          in range(0, self.DEFAULT_ORDER_SIZE
+                                                   + curr_quantity)]
 
-        elif len(self.inventory[order]) < int(order.product_details['quantity']):
-            for new_item in order.factory().create_items():
-                self.inventory[order.name].append(new_item)
+        self.update_inventory_item(order, order_amount)
+        # TODO: Add method to update order_history
+
+    def get_order_history(self):
+        history = ""
+        for order in self.order_history:
+            history += order.__str__()
+            # history += f"Order {order.order_number}, Item {order.item_type}, "\
+            #     f"Product ID {order.product_id}, Name \"{order.name}\", " \
+            #     f"Quantity {order.product_details['quantity']}\n"
+        return history
 
     @staticmethod
     def create_report(orders):
@@ -117,7 +137,6 @@ class Store:
         with open(f"{file_name}.txt", mode='w', encoding='utf-8') as file:
             title = 'HOLIDAY STORE - DAILY TRANSACTION REPORT(DRT)\n'
             date_time = f"{day}-{month}-{year} {hour}:{minute}\n\n"
-            orders = orders.order_history()
+            orders = orders.get_order_history()
             data = title + date_time + orders
             file.write(data)
-
