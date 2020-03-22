@@ -13,10 +13,7 @@ class UserMenu:
         self.store = Store()
 
     def process_web_orders(self):
-        orders = self.order_processor.get_orders()
-        for order in orders:
-            self.order_processor.add_orders(order)
-        for order in self.order_processor.order_list:
+        for order in self.order_processor.get_orders():
             self.store.receive_order(order)
         print(f"\nSuccessfully processed "
               f"{len(self.order_processor.order_list)} "
