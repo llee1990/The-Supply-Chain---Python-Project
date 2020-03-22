@@ -71,8 +71,6 @@ class Order:
             if arg != "holiday" and not pandas.isnull(value):
                 self.product_details[arg] = value
 
-        print(self.product_details)
-
     def __str__(self):
         separator = "-" * 20
         order_details = f"Order number: {self.order_number}\n" \
@@ -95,7 +93,7 @@ class Store:
     def receive_order(self, order):
         self.get_item(order)
         for num in range(int(order.product_details['quantity'])):
-            self.inventory[order.name].pop()
+            self.inventory[order.name]
 
     def get_item(self, order):
         factory = order.factory
@@ -104,9 +102,8 @@ class Store:
             # new code
             new_item = factory.create_items(item_type=order.item_type,
                                             **order.product_details)
-            self.inventory[order.name] = [new_item for new_item
+            self.inventory[order.name] = [new_item for i
                                           in range(0, new_item.quantity)]
-
             # old code
             # self.inventory[item.name] = \
             #     [new_item for new_item in item.factory().create_items()]
@@ -114,6 +111,8 @@ class Store:
         elif len(self.inventory[order]) < int(order.product_details['quantity']):
             for new_item in order.factory().create_items():
                 self.inventory[order.name].append(new_item)
+
+        print(self.inventory)
 
     @staticmethod
     def create_report(orders):
