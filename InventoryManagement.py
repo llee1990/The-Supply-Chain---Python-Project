@@ -62,7 +62,11 @@ class Order:
         self.name = name
         self.holiday = holiday
         self.product_details = {}
-        self.factory = OrderProcessor.factory_map[FactoryEnum(holiday)]
+        self.factory = OrderProcessor.factory_map[FactoryEnum(holiday)]()
+
+        # Product details to instantiate Item objects
+        self.product_details["name"] = name
+        self.product_details["product_id"] = product_id
         for arg, value in kwargs.items():
             if arg != "holiday" and not pandas.isnull(value):
                 self.product_details[arg] = value
@@ -92,14 +96,15 @@ class Store:
             self.inventory[item.name].pop()
 
     def get_item(self, item):
-        print(item)
-        print(self.inventory)
+        factory = item.factory
         if item not in self.inventory:
-            new_item = item.factory.create_items(item.item_type, **item)
-            print(new_item)
 
-            self.inventory[item.name] = \
-                [new_item for new_item in item.factory().create_items()]
+            new_item = factory.create_items(item_type=item.item_type,
+                                            **item.product_details)
+            self.inventory[new_item.name] = new_item
+
+            # self.inventory[item.name] = \
+            #     [new_item for new_item in item.factory().create_items()]
 
         elif len(self.inventory[item]) < int(item.product_details['quantity']):
             for new_item in item.factory().create_items():
