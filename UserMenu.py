@@ -3,6 +3,7 @@
 """
 from InventoryManagement import OrderProcessor, Store
 import time
+import texttable
 
 
 class UserMenu:
@@ -15,19 +16,37 @@ class UserMenu:
         for order in self.order_processor.get_orders():
             self.store.receive_order(order)
 
+        print(f"\nSuccessfully processed"
+              f" {len(self.order_processor.order_list)} "
+              f"orders...\n")
+        self.order_processor.clear_order_list()
+
     def check_inventory(self):
+        table = texttable.Texttable()
+        table.set_deco(table.HEADER)
+        table.add_rows([["Name",    "Stock", "Quantity"]])
+        table.set_cols_dtype(['t',  # text
+                              't',  # float (decimal)
+                              'i',  # float (exponent)
+                              ])
+        table.set_cols_align(["l", "r", "r"])
         for key, value in self.store.inventory.items():
+            row = [key.name]
             if len(value) == 0:
-                print(f"{key}: Out of Stock")
+                print(f"{key.name}: Out of Stock")
             if 0 < len(value) < 3:
-                print(f"{key}: Very Low")
+                row.append("Very Low")
             if 3 < len(value) < 10:
-                print(f"{key}: Low")
+                row.append("Low")
             if len(value) > 10:
-                print(f"{key}: In stock")
+                row.append("In stock")
+            row.append(len(value))
+            table.add_row(row)
+        print(f"\n{table.draw()}\n")
 
     def exit_program(self):
         print("Printing report...")
+        self.order_manager.create_report()
         self.store.create_report(self.order_processor)
         time.sleep(0.5)
         print("Exiting program...")
