@@ -71,6 +71,8 @@ class Order:
             if arg != "holiday" and not pandas.isnull(value):
                 self.product_details[arg] = value
 
+        print(self.product_details)
+
     def __str__(self):
         separator = "-" * 20
         order_details = f"Order number: {self.order_number}\n" \
@@ -90,25 +92,28 @@ class Store:
     def __init__(self):
         self.inventory = {}
 
-    def receive_order(self, item):
-        self.get_item(item)
-        for num in range(int(item.product_details['quantity'])):
-            self.inventory[item.name].pop()
+    def receive_order(self, order):
+        self.get_item(order)
+        for num in range(int(order.product_details['quantity'])):
+            self.inventory[order.name].pop()
 
-    def get_item(self, item):
-        factory = item.factory
-        if item not in self.inventory:
+    def get_item(self, order):
+        factory = order.factory
+        if order not in self.inventory:
 
-            new_item = factory.create_items(item_type=item.item_type,
-                                            **item.product_details)
-            self.inventory[new_item.name] = new_item
+            # new code
+            new_item = factory.create_items(item_type=order.item_type,
+                                            **order.product_details)
+            self.inventory[order.name] = [new_item for new_item
+                                          in range(0, new_item.quantity)]
 
+            # old code
             # self.inventory[item.name] = \
             #     [new_item for new_item in item.factory().create_items()]
 
-        elif len(self.inventory[item]) < int(item.product_details['quantity']):
-            for new_item in item.factory().create_items():
-                self.inventory[item.name].append(new_item)
+        elif len(self.inventory[order]) < int(order.product_details['quantity']):
+            for new_item in order.factory().create_items():
+                self.inventory[order.name].append(new_item)
 
     @staticmethod
     def create_report(orders):
