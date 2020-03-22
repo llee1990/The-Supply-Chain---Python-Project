@@ -3,11 +3,26 @@
 """
 
 from abc import ABC, abstractmethod
+from InventoryItems import SantaWorkshop, RCSpider, RobotBunny, \
+    DancingSkeletons, Reindeer, EasterBunny, PumpkinCaramelToffee, \
+    CandyCane, CremeEggs
 
 
 class SeasonalItemFactory(ABC):
 
     def __init__(self):
+        pass
+
+    @abstractmethod
+    def create_toy(self):
+        pass
+
+    @abstractmethod
+    def create_stuffed_animal(self):
+        pass
+
+    @abstractmethod
+    def create_candy(self):
         pass
 
 
@@ -16,11 +31,29 @@ class ChristmasItemFactory(SeasonalItemFactory):
     def __init__(self):
         pass
 
+    def create_toy(self) -> SantaWorkshop:
+        return SantaWorkshop()
+
+    def create_stuffed_animal(self) -> Reindeer:
+        return Reindeer()
+
+    def create_candy(self) -> CandyCane:
+        return CandyCane()
+
 
 class HalloweenItemFactory(SeasonalItemFactory):
 
     def __init__(self):
         pass
+
+    def create_toy(self) -> RCSpider:
+        return RCSpider()
+
+    def create_stuffed_animal(self) -> DancingSkeletons:
+        return DancingSkeletons()
+
+    def create_candy(self) -> PumpkinCaramelToffee:
+        return PumpkinCaramelToffee()
 
 
 class EasterItemFactory(SeasonalItemFactory):
@@ -28,123 +61,11 @@ class EasterItemFactory(SeasonalItemFactory):
     def __init__(self):
         pass
 
+    def create_toy(self) -> RobotBunny:
+        return RobotBunny()
 
-# class InventoryFactory(ABC):
-#
-#     def __init__(self):
-#         pass
-#
-#     @abc.abstractmethod
-#     def create_items(self):
-#         pass
-#
-#
-# class ToysFactory(InventoryFactory):
-#
-#     def __init__(self):
-#         super().__init__()
-#
-#     @abc.abstractmethod
-#     def create_items(self):
-#         pass
-#
-#
-# class SantaShopFactory(ToysFactory):
-#
-#     def __init__(self):
-#         super().__init__()
-#
-#     def create_items(self):
-#         pass
-#
-#
-# class RCSpiderFactory(ToysFactory):
-#
-#     def __init__(self):
-#         super().__init__()
-#
-#     def create_items(self):
-#         pass
-#
-#
-# class RobotBunnyFactory(ToysFactory):
-#
-#     def __init__(self):
-#         super().__init__()
-#
-#     def create_items(self):
-#         pass
-#
-#
-# class StuffedAnimalsFactory(InventoryFactory):
-#
-#     def __init__(self):
-#         super().__init__()
-#
-#     @abc.abstractmethod
-#     def create_items(self):
-#         pass
-#
-#
-# class DancingSkeletonFactory(StuffedAnimalsFactory):
-#
-#     def __init__(self):
-#         super().__init__()
-#
-#     def create_items(self):
-#         pass
-#
-#
-# class ReindeerFactory(StuffedAnimalsFactory):
-#
-#     def __init__(self):
-#         super().__init__()
-#
-#     def create_items(self):
-#         pass
-#
-#
-# class EasterBunnyFactory(StuffedAnimalsFactory):
-#
-#     def __init__(self):
-#         super().__init__()
-#
-#     def create_items(self):
-#         pass
-#
-#
-# class CandyFactory(InventoryFactory):
-#
-#     def __init__(self):
-#         super().__init__()
-#
-#     @abc.abstractmethod
-#     def create_items(self):
-#         pass
-#
-#
-# class PCTFactory(CandyFactory):
-#
-#     def __init__(self):
-#         super().__init__()
-#
-#     def create_items(self):
-#         pass
-#
-#
-# class CandyCanesFactory(CandyFactory):
-#
-#     def __init__(self):
-#         super().__init__()
-#
-#     def create_items(self):
-#         pass
-#
-#
-# class CremeEggsFactory(CandyFactory):
-#
-#     def __init__(self):
-#         super().__init__()
-#
-#     def create_items(self):
-#         pass
+    def create_stuffed_animal(self) -> EasterBunny:
+        return EasterBunny()
+
+    def create_candy(self) -> CremeEggs:
+        return CremeEggs()
