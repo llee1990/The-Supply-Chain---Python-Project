@@ -12,12 +12,14 @@ class UserMenu:
         self.store = Store()
 
     def process_web_orders(self):
-        self.order_processor.get_orders()
+        orders = self.order_processor.get_orders()
+        for order in orders:
+            self.order_processor.update_orders(order)
+
         for order in self.order_processor.order_list:
             self.store.receive_order(order)
 
     def check_inventory(self):
-        print(self.store.inventory)
         for key, value in self.store.inventory.items():
             if len(value) == 0:
                 print(f"{key}: Out of Stock")
@@ -34,6 +36,7 @@ class UserMenu:
         time.sleep(0.5)
         print("Exiting program...")
         time.sleep(0.5)
+
 
 def execute_program():
     path = "orders.xlsx"

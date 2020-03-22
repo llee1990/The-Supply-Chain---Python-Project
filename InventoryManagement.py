@@ -20,19 +20,6 @@ class OrderProcessor:
         FactoryEnum.HALLOWEEN: HalloweenItemFactory
     }
 
-    # factory_map = {"Toy":
-    #                {"Christmas": InventoryFactories.SantaShopFactory,
-    #                 "Easter": InventoryFactories.RobotBunnyFactory,
-    #                 "Halloween": InventoryFactories.RCSpiderFactory},
-    #                "StuffedAnimal":
-    #                {"Christmas": InventoryFactories.ReindeerFactory,
-    #                 "Easter": InventoryFactories.EasterBunnyFactory,
-    #                 "Halloween": InventoryFactories.DancingSkeletonFactory},
-    #                "Candy":
-    #                {"Christmas": InventoryFactories.CandyCanesFactory,
-    #                 "Easter": InventoryFactories.CremeEggsFactory,
-    #                 "Halloween": InventoryFactories.PCTFactory}}
-
     def __init__(self, path):
         self.path = path
         self.order_list = []
@@ -40,8 +27,11 @@ class OrderProcessor:
     def get_orders(self):
         excel_df = pandas.read_excel(self.path)
         for row in excel_df.iterrows():
-            self.order_list.append(Order(**row[1]))
-            # yield Order(**row[1])
+            # self.order_list.append(Order(**row[1]))
+            yield Order(**row[1])
+
+    def update_orders(self, order):
+        self.order_list.append(order)
 
     def order_history(self):
         history = ""
@@ -112,8 +102,6 @@ class Store:
             for new_item in order.factory().create_items():
                 self.inventory[order.name].append(new_item)
 
-        print(self.inventory)
-
     @staticmethod
     def create_report(orders):
         local_time = time.localtime()
@@ -127,10 +115,9 @@ class Store:
         hour = time.strftime('%H', local_time)
         minute = time.strftime('%M', local_time)
         file_name = f"DTR_{day}{month}{year}_{hour}{minute}"
-        print(file_name)
         with open(f"{file_name}.txt", mode='w', encoding='utf-8') as file:
-            title = 'HOLIDAY STORE - DAILY TRANSACTION REPORT(DRT)\n\n'
-            date_time = f"{day}-{month}-{year} {hour}:{minute}\n"
+            title = 'HOLIDAY STORE - DAILY TRANSACTION REPORT(DRT)\n'
+            date_time = f"{day}-{month}-{year} {hour}:{minute}\n\n"
             orders = orders.order_history()
             data = title + date_time + orders
             file.write(data)
