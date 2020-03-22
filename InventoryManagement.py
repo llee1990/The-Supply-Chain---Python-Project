@@ -77,3 +77,6 @@ class Store:
         elif len(self.inventory[item]) < int(item.product_details['quantity']):
             for new_item in item.factory().create_items():
                 self.inventory[item.name].append(new_item)
+                
+    def create_report(self):
+        pass
