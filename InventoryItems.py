@@ -68,8 +68,8 @@ class RCSpider(Toy):
             self.error_message += '"jump_height" must be greater than "1". '
         if has_glow.upper() != "N" and has_glow.upper() != "Y":
             self.error_message += '"has_glow" must be set to "Y" or "N". '
-        if spider_type.upper() != "Tarantula" and \
-                spider_type.upper() != "Wolf Spider":
+        if spider_type.title() != "Tarantula" and \
+                spider_type.title() != "Wolf Spider":
             self.error_message += '"spider_type" must be either "Tarantula" ' \
                                   'or "Wolf Spider". '
         self.speed = speed
@@ -166,9 +166,9 @@ class PumpkinCaramelToffee(Candy):
 
     def __init__(self, variety, **kwargs):
         super().__init__(**kwargs)
-        if self.has_lactose != "N":
-            self.error_message += '"has_lactose" must be "N". '
-        if self.has_nuts != "Y":
+        if self.has_lactose.upper() != "Y":
+            self.error_message += '"has_lactose" must be "Y". '
+        if self.has_nuts.upper() != "Y":
             self.error_message += '"has_nuts" must be "Y". '
         if variety.title() != "Sea Salt" and variety.title() != "Regular":
             self.error_message += '"variety" must be "Sea Salt" or "Regular". '
@@ -182,9 +182,9 @@ class CandyCane(Candy):
 
     def __init__(self, colour, **kwargs):
         super().__init__(**kwargs)
-        if self.has_lactose != "Y":
-            self.error_message += '"has_lactose" must be "Y". '
-        if self.has_nuts != "N":
+        if self.has_lactose.upper() != "N":
+            self.error_message += '"has_lactose" must be "N". '
+        if self.has_nuts.upper() != "N":
             self.error_message += '"has_nuts" must be "N". '
         if colour.title() != "Red" and colour.title() != "Green":
             self.error_message += '"colour" must be "Red" or "Green". '
@@ -198,9 +198,9 @@ class CremeEggs(Candy):
 
     def __init__(self, pack_size, **kwargs):
         super().__init__(**kwargs)
-        if self.has_lactose != "N":
-            self.error_message += '"has_lactose" must be "N". '
-        if self.has_nuts != "Y":
+        if self.has_lactose.upper() != "Y":
+            self.error_message += '"has_lactose" must be "Y". '
+        if self.has_nuts.upper() != "Y":
             self.error_message += '"has_nuts" must be "Y". '
         if pack_size < 5:
             self.error_message += '"has_nuts" must be greater than "5". '

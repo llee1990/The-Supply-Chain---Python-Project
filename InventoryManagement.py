@@ -120,7 +120,7 @@ class Store:
         # TODO: Add method to update order_history
 
     def append_order_history(self, order, item):
-        if item.error_message != "":
+        if item.error_message == "":
             self.order_history.append(order.get_order_history())
         else:
             self.order_history.append(f"Order {item.order_number}, "
