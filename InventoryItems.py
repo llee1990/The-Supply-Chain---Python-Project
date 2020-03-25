@@ -70,7 +70,7 @@ class Toy(Item):
         that are passed to super()
         """
         super().__init__(**kwargs)
-        if min_age < 1:
+        if int(min_age) < 1:
             self._error_message += '"min_age" must be greater than "1". '
         self._min_age = min_age
         self._has_batteries = has_batteries
@@ -93,7 +93,7 @@ class SantaWorkshop(Toy):
         super().__init__(**kwargs)
         if self._has_batteries.upper() != "N":
             self._error_message += '"has_batteries" must be "N". '
-        if num_rooms < 1:
+        if int(num_rooms) < 1:
             self._error_message += '"num_rooms" must be greater than "1". '
         if self._error_message != '':
             raise InvalidDataError(self.error_message)
@@ -108,12 +108,22 @@ class RCSpider(Toy):
 
     def __init__(self, speed, jump_height, has_glow,
                  spider_type, **kwargs):
+        """
+        Initializes a RCSpider object
+
+        :param speed: A String
+        :param jump_height: A String
+        :param has_glow: A String
+        :param spider_type: A String
+        :param kwargs: Keyword arguments containing item attributes
+        that are passed to super()
+        """
         super().__init__(**kwargs)
         if self._has_batteries.upper() != "Y":
             self._error_message += '"has_batteries" must be "Y". '
-        if speed < 1:
+        if int(speed) < 1:
             self._error_message += '"speed" must be greater than "1". '
-        if jump_height < 1:
+        if int(jump_height) < 1:
             self._error_message += '"jump_height" must be greater than "1". '
         if has_glow.upper() != "N" and has_glow.upper() != "Y":
             self._error_message += '"has_glow" must be set to "Y" or "N". '
@@ -130,10 +140,21 @@ class RCSpider(Toy):
 
 
 class RobotBunny(Toy):
+    """
+    The RobotBunny class creates RobotBunny toys
+    """
 
     def __init__(self, num_sound, colour, **kwargs):
+        """
+        Initializes a RobotBunny object
+
+        :param num_sound: A String
+        :param colour: A String
+        :param kwargs: Keyword arguments containing item attributes
+        that are passed to super()
+        """
         super().__init__(**kwargs)
-        if num_sound < 1:
+        if int(num_sound) < 1:
             self._error_message += '"num_sound" must be greater than "1" '
         if colour.title() != "Orange" and colour.title() != "Blue" and \
                 colour.title() != "Pink":
@@ -146,8 +167,18 @@ class RobotBunny(Toy):
 
 
 class StuffedAnimal(Item):
+    """Parent class of all StuffedAnimal toys"""
 
     def __init__(self, stuffing, size, fabric, **kwargs):
+        """
+        Initializes a StuffedAnimal object
+
+        :param stuffing: A String
+        :param size: A String
+        :param fabric: A String
+        :param kwargs: Keyword arguments containing item attributes
+        that are passed to super()
+        """
         super().__init__(**kwargs)
         if size.upper() != "S" and size.upper() != "M" and size.upper() != "L":
             self._error_message += '"size" must be either "S", "M" ' \
@@ -158,8 +189,18 @@ class StuffedAnimal(Item):
 
 
 class DancingSkeletons(StuffedAnimal):
+    """
+    Creates DancingSkeletons stuffed animals
+    """
 
     def __init__(self, has_glow, **kwargs):
+        """
+        Initializes a DancingSkeletons object
+
+        :param has_glow: A String
+        :param kwargs: Keyword arguments containing item attributes
+        that are passed to super()
+        """
         super().__init__(**kwargs)
         if self._stuffing.title() != "Polyester Fibrefill":
             self._error_message += '"stuffing" must be "Polyester Fibrefill". '
@@ -171,8 +212,18 @@ class DancingSkeletons(StuffedAnimal):
 
 
 class Reindeer(StuffedAnimal):
+    """
+    Creates Reindeer stuffed animals
+    """
 
     def __init__(self, has_glow, **kwargs):
+        """
+        Initializes a Reindeer object
+
+        :param has_glow: A String
+        :param kwargs: Keyword arguments containing item attributes
+        that are passed to super()
+        """
         super().__init__(**kwargs)
         if self._stuffing.title() != "Wool":
             self._error_message += '"stuffing" must be "Wool". '
@@ -184,8 +235,18 @@ class Reindeer(StuffedAnimal):
 
 
 class EasterBunny(StuffedAnimal):
+    """
+    Creates EasterBunny stuffed animals
+    """
 
     def __init__(self, colour, **kwargs):
+        """
+        Initializes an EasterBunny object
+
+        :param colour: A String
+        :param kwargs: Keyword arguments containing item attributes
+        that are passed to super()
+        """
         super().__init__(**kwargs)
         if self._stuffing.title() != "Polyester Fibrefill":
             self._error_message += '"stuffing" must be "Polyester Fibrefill". '
@@ -197,6 +258,9 @@ class EasterBunny(StuffedAnimal):
 
 
 class Candy(Item):
+    """
+    Parent class of all Candy items
+    """
 
     def __init__(self, has_lactose, has_nuts, **kwargs):
         super().__init__(**kwargs)
@@ -205,8 +269,18 @@ class Candy(Item):
 
 
 class PumpkinCaramelToffee(Candy):
+    """
+    Creates PumpkinCaramelToffee candy objects
+    """
 
     def __init__(self, variety, **kwargs):
+        """
+        Initializes a PumpkinCaramelToffee object
+
+        :param variety: A String
+        :param kwargs: Keyword arguments containing item attributes
+        that are passed to super()
+        """
         super().__init__(**kwargs)
         if self._has_lactose.upper() != "Y":
             self._error_message += '"has_lactose" must be "Y". '
@@ -220,8 +294,18 @@ class PumpkinCaramelToffee(Candy):
 
 
 class CandyCane(Candy):
+    """
+    Creates CandyCane candy objects
+    """
 
     def __init__(self, colour, **kwargs):
+        """
+        Initializes a CandyCane object
+
+        :param colour: A String
+        :param kwargs: Keyword arguments containing item attributes
+        that are passed to super()
+        """
         super().__init__(**kwargs)
         if self._has_lactose.upper() != "N":
             self._error_message += '"has_lactose" must be "N". '
@@ -235,31 +319,25 @@ class CandyCane(Candy):
 
 
 class CremeEggs(Candy):
+    """
+    Creates CremeEggs candy objects
+    """
 
     def __init__(self, pack_size, **kwargs):
+        """
+        Initializes a CremeEggs object
+
+        :param pack_size: A String
+        :param kwargs:
+        """
         super().__init__(**kwargs)
         if self._has_lactose.upper() != "Y":
             self._error_message += '"has_lactose" must be "Y". '
         if self._has_nuts.upper() != "Y":
             self._error_message += '"has_nuts" must be "Y". '
-        if pack_size < 5:
+        if int(pack_size) < 5:
             self._error_message += '"has_nuts" must be greater than "5". '
         if self._error_message != '':
             raise InvalidDataError(self.error_message)
 
         self._pack_size = pack_size
-
-
-def main():
-    args = {'name': 'Santas Workshop - Essentials Edition', 'product_id':
-        'C1230T',
-     'quantity': 10,
-     'description': 'The most sought after christmas present! Get yours today!',
-     'has_batteries': 'N', 'min_age': 5.0, 'dimensions': '50,90',
-     'num_rooms': 4.0}
-    santa_workshop = SantaWorkshop(**args)
-    print(hash(santa_workshop))
-
-
-if __name__ == "__main__":
-    main()
