@@ -107,7 +107,8 @@ class Store:
         self.inventory = {}
         self.order_history = []
 
-    def update_inventory_item(self, order, quantity):
+
+    def __update_inventory_item(self, order, quantity):
         while quantity != 0:
             self.inventory[order.name].pop()
             quantity -= 1
@@ -140,7 +141,7 @@ class Store:
                                         in range(self.DEFAULT_ORDER_SIZE
                                                  + curr_quantity)]
 
-            self.update_inventory_item(order, order_amount)
+            self.__update_inventory_item(order, order_amount)
             self.__append_order_history(order, new_item.error_message)
 
     def __append_order_history(self, order, message):
