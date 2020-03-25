@@ -18,7 +18,7 @@ class OrderProcessor:
 
     def __init__(self):
         self._path = ""
-        self.order_list = []
+        # self.order_list = []
 
     @property
     def path(self):
@@ -187,14 +187,3 @@ class Store:
             all_orders = self.__get_order_history()
             data = title + date_time + all_orders
             file.write(data)
-
-
-def main():
-    a = OrderProcessor()
-    c = Store()
-    for order in a.get_orders():
-        c.receive_order(order)
-
-
-if __name__ == "__main__":
-    main()
