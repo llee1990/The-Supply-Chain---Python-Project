@@ -153,7 +153,7 @@ class Store:
                                         in range(self.DEFAULT_ORDER_SIZE
                                                  + curr_quantity)]
 
-            self.update_inventory_item(order, order_amount)
+            self.__update_inventory_item(order, order_amount)
             self.__append_order_history(order, new_item.error_message)
 
     def __append_order_history(self, order, message):
