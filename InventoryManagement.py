@@ -17,7 +17,7 @@ class OrderProcessor:
     }
 
     def __init__(self):
-        self._path = None
+        self._path = ""
         self.order_list = []
 
     @property
@@ -28,11 +28,11 @@ class OrderProcessor:
     def path(self, value):
         self._path = value
 
-    def add_orders(self, order):
-        self.order_list.append(order)
-
-    def clear_order_list(self):
-        self.order_list = []
+    # def add_orders(self, order):
+    #     self.order_list.append(order)
+    #
+    # def clear_order_list(self):
+    #     self.order_list = []
 
     def get_orders(self):
         try:
