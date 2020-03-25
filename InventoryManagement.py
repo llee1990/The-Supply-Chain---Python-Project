@@ -105,8 +105,7 @@ class Store:
 
     def __init__(self):
         self.inventory = {}
-        self.order_history = []
-
+        self.order_history = {}
 
     def __update_inventory_item(self, order, quantity):
         while quantity != 0:
@@ -145,16 +144,16 @@ class Store:
             self.__append_order_history(order, new_item.error_message)
 
     def __append_order_history(self, order, message):
-        self.order_history.append([order, message])
+        self.order_history[order] = message
 
     def __get_order_history(self):
         order_history = ""
-        for order in self.order_history:
-            if order[1] == "":      # order was processed successfully
-                order_history += f"{order[0].get_order_history()}\n"
+        for key, value in self.order_history.items():
+            if value == "":      # order was processed successfully
+                order_history += f"{key.get_order_history()}\n"
             else:
-                order_history += f"Order {order[0].order_number}, " \
-                                 f"{order[1]}\n\n"
+                order_history += f"Order {key.order_number}, " \
+                                 f"{value}\n\n"
         return order_history
 
     def create_report(self):
