@@ -28,15 +28,15 @@ class Item(ABC):
         :param name: A String
         :param description: A String
         :param product_id: A String
-        :param quantity: A String
-        :param order_number: A String
+        :param quantity: an int
+        :param order_number: an int
         """
         self._error_message = ''
         if not product_id[0].isalpha() and not product_id[1:].isdigit():
             self._error_message += '"product_id" is not the correct format. '
         if int(quantity) < 1:
             self._error_message += '"quantity" must be greater than "1"'
-        if not order_number.isdigit():
+        if order_number < 1:
             self._error_message += '"Order number" must be a number'
         self._name = name
         self._description = description
@@ -70,8 +70,8 @@ class Toy(Item):
         """
         Initializes a Toy object
 
-        :param min_age: A String
-        :param has_batteries: A String
+        :param min_age: an int
+        :param has_batteries: a String
         :param kwargs: Keyword arguments containing item attributes
         that are passed to super()
         """
@@ -92,7 +92,7 @@ class SantaWorkshop(Toy):
         Initializes a SantaWorkshop object
 
         :param dimensions: A String
-        :param num_rooms: A String
+        :param num_rooms: an int
         :param kwargs: Keyword arguments containing item attributes
         that are passed to super()
         """
@@ -117,8 +117,8 @@ class RCSpider(Toy):
         """
         Initializes a RCSpider object
 
-        :param speed: A String
-        :param jump_height: A String
+        :param speed: an int
+        :param jump_height: an int
         :param has_glow: A String
         :param spider_type: A String
         :param kwargs: Keyword arguments containing item attributes
@@ -154,7 +154,7 @@ class RobotBunny(Toy):
         """
         Initializes a RobotBunny object
 
-        :param num_sound: A String
+        :param num_sound: an int
         :param colour: A String
         :param kwargs: Keyword arguments containing item attributes
         that are passed to super()
