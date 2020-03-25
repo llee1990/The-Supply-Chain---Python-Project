@@ -101,7 +101,7 @@ class Store:
     # def receive_order(self, order):
     #     self.__process_item(order)
 
-    def update_inventory_item(self, order, quantity):
+    def __update_inventory_item(self, order, quantity):
         while quantity != 0:
             self.inventory[order.name].pop()
             quantity -= 1
