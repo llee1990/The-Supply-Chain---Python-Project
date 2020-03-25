@@ -59,37 +59,35 @@ class UserMenu:
     def load_intro():
         pass
 
-
-def execute_program():
-    menu = UserMenu()
-    menu_options = {
-        1: menu.process_web_orders,
-        2: menu.check_inventory,
-        3: menu.exit_program
-    }
-    program_running = True
-    while program_running:
-        print("-" * 15)
-        print("What would you like to do today?")
-        print("-" * 15)
-        print("1. Process web orders")
-        print("2. Check inventory")
-        print("3. Exit program")
-        print("-" * 15)
-        user_input = 0
-        while user_input < 1 or user_input > 3:
-            try:
-                user_input = int(input("Select an option:"))
-            except ValueError:
-                continue
-        menu_options[user_input]()
-        if user_input == 3:
-            break
+    def execute(self):
+        menu_options = {
+            1: self.process_web_orders,
+            2: self.check_inventory,
+            3: self.exit_program
+        }
+        program_running = True
+        while program_running:
+            print("-" * 15)
+            print("What would you like to do today?")
+            print("-" * 15)
+            print("1. Process web orders")
+            print("2. Check inventory")
+            print("3. Exit program")
+            print("-" * 15)
+            user_input = 0
+            while user_input < 1 or user_input > 3:
+                try:
+                    user_input = int(input("Select an option:"))
+                except ValueError:
+                    continue
+            menu_options[user_input]()
+            if user_input == 3:
+                break
 
 
 def main():
     program = UserMenu()
-    program.execute_program()
+    program.execute()
 
 
 if __name__ == "__main__":
