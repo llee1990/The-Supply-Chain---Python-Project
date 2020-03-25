@@ -207,16 +207,16 @@ class CremeEggs(Candy):
         self._pack_size = pack_size
 
 
-def main():
-    args = {'name': 'Santas Workshop - Essentials Edition', 'product_id':
-        'C1230T',
-     'quantity': 10,
-     'description': 'The most sought after christmas present! Get yours today!',
-     'has_batteries': 'N', 'min_age': 5.0, 'dimensions': '50,90',
-     'num_rooms': 4.0}
-    santa_workshop = SantaWorkshop(**args)
-    print(hash(santa_workshop))
-
-
-if __name__ == "__main__":
-    main()
+# def main():
+#     args = {'name': 'Santas Workshop - Essentials Edition', 'product_id':
+#         'C1230T',
+#      'quantity': 10,
+#      'description': 'The most sought after christmas present! Get yours today!',
+#      'has_batteries': 'N', 'min_age': 5.0, 'dimensions': '50,90',
+#      'num_rooms': 4.0}
+#     santa_workshop = SantaWorkshop(**args)
+#     print(hash(santa_workshop))
+# 
+# 
+# if __name__ == "__main__":
+#     main()
