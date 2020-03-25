@@ -55,7 +55,6 @@ class SantaWorkshop(Toy):
         self._num_rooms = num_rooms
 
     def __str__(self):
-
         return f"{self._name}, {self._description}, {self._product_id}, " \
                f"{self._quantity}, {self._min_age}, {self._has_batteries}, " \
                f"{self._dimensions}, {self._num_rooms}"
@@ -170,7 +169,7 @@ class PumpkinCaramelToffee(Candy):
         if self._has_nuts.upper() != "Y":
             self._error_message += '"has_nuts" must be "Y". '
         if variety.title() != "Sea Salt" and variety.title() != "Regular":
-            self._error_message += '"variety" must be "Sea Salt" or "Regular". '
+            self._error_message += '"variety" must be "Sea Salt" or "Regular".'
         if self._error_message != '':
             raise InvalidDataError(self.error_message)
         self._variety = variety
@@ -209,11 +208,12 @@ class CremeEggs(Candy):
 
 def main():
     args = {'name': 'Santas Workshop - Essentials Edition', 'product_id':
-        'C1230T',
-     'quantity': 10,
-     'description': 'The most sought after christmas present! Get yours today!',
-     'has_batteries': 'N', 'min_age': 5.0, 'dimensions': '50,90',
-     'num_rooms': 4.0}
+            'C1230T',
+            'quantity': 10,
+            'description': 'The most sought after christmas present! '
+                           'Get yours today!',
+            'has_batteries': 'N', 'min_age': 5.0, 'dimensions': '50,90',
+            'num_rooms': 4.0}
     santa_workshop = SantaWorkshop(**args)
     print(hash(santa_workshop))
 
