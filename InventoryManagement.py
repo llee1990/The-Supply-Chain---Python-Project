@@ -16,13 +16,32 @@ class OrderProcessor:
         FactoryEnum.HALLOWEEN: HalloweenItemFactory
     }
 
-    def __init__(self, path):
-        self._path = path
+    def __init__(self):
+        self._path = ""
+        self.order_list = []
+
+    @property
+    def path(self):
+        return self._path
+
+    @path.setter
+    def path(self, value):
+        self._path = value
+
+    # def add_orders(self, order):
+    #     self.order_list.append(order)
+    #
+    # def clear_order_list(self):
+    #     self.order_list = []
 
     def get_orders(self):
-        excel_df = pandas.read_excel(self._path)
-        for row in excel_df.iterrows():
-            yield Order(**row[1])
+        try:
+            excel_df = pandas.read_excel(self.path)
+        except FileNotFoundError as fne:
+            print("Error: " + str(fne))
+        else:
+            for row in excel_df.iterrows():
+                yield Order(**row[1])
 
 
 class Order:
@@ -171,8 +190,7 @@ class Store:
 
 
 def main():
-
-    a = OrderProcessor("orders.xlsx")
+    a = OrderProcessor()
     c = Store()
     for order in a.get_orders():
         c.receive_order(order)

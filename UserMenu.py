@@ -8,11 +8,21 @@ import texttable
 
 class UserMenu:
 
-    def __init__(self, path):
-        self.order_processor = OrderProcessor(path)
+    def __init__(self):
+        self.order_processor = OrderProcessor()
         self.store = Store()
 
+    def prompt_file_input(self):
+        while True:
+            path = input("Enter an excel file to process orders: ")
+            if ".xlsx" not in path:
+                print("Error: File must be a type of .xlsx extension.\n")
+            else:
+                break
+        self.order_processor.path = path
+
     def process_web_orders(self):
+        self.prompt_file_input()
         order_count = 0
         orders = self.order_processor.get_orders()
         for order in orders:
@@ -53,8 +63,7 @@ class UserMenu:
 
 
 def execute_program():
-    path = "orders.xlsx"
-    menu = UserMenu(path)
+    menu = UserMenu()
     menu_options = {
         1: menu.process_web_orders,
         2: menu.check_inventory,
