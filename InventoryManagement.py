@@ -140,7 +140,7 @@ class Store:
     def __append_order_history(self, order, message):
         self.order_history.append([order, message])
 
-    def get_order_history(self):
+    def __get_order_history(self):
         order_history = ""
         for order in self.order_history:
             if order[1] == "":      # order was processed successfully
@@ -165,7 +165,7 @@ class Store:
         with open(f"{file_name}.txt", mode='w', encoding='utf-8') as file:
             title = 'HOLIDAY STORE - DAILY TRANSACTION REPORT(DRT)\n'
             date_time = f"{day}-{month}-{year} {hour}:{minute}\n\n"
-            all_orders = self.get_order_history()
+            all_orders = self.__get_order_history()
             data = title + date_time + all_orders
             file.write(data)
 
