@@ -15,7 +15,7 @@ class UserMenu:
         self.store = Store()
 
     @staticmethod
-    def load_intro():
+    def __load_intro():
         """
         generated from http://patorjk.com/
         """
@@ -29,7 +29,8 @@ class UserMenu:
                "   🐰🐰🐰🐰    🎅    🎅      🎁🎁🎁     🎃🎃🎃🎃 \n" \
                "   🐰          🎅    🎅     🎁    🎁    🎃    🎃 \n" \
                "    🐰🐰🐰      🎅 🎅 🎅    🎁     🎁    🎃🎃🎃 \n" \
-               "         🐰     🎅    🎅    🎁    🎁     🎃      \n" \
+               "         🐰     🎅    🎅    🎁    🎁     🎃  " \
+               "+    \n" \
                "   🐰🐰🐰🐰      🎅    🎅     🎁🎁🎁      🎃       \n"
         print(logo)
 
@@ -90,7 +91,7 @@ class UserMenu:
         exit()
 
     def execute_program(self):
-        UserMenu.load_intro()
+        UserMenu.__load_intro()
         menu_options = {
             1: self.process_web_orders,
             2: self.check_inventory,
