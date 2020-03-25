@@ -28,7 +28,17 @@ class OrderProcessor:
     def path(self, value):
         self._path = value
 
+    def prompt_file_input(self):
+        while True:
+            path = input("Enter an excel file to process orders: ")
+            if ".xlsx" not in path:
+                print("Error: File must be a type of .xlsx extension.\n")
+            else:
+                break
+        self.path = path
+
     def get_orders(self):
+        self.prompt_file_input()
         excel_df = pandas.read_excel(self.path)
         for row in excel_df.iterrows():
             yield Order(**row[1])

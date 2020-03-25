@@ -12,18 +12,8 @@ class UserMenu:
         self.order_processor = OrderProcessor()
         self.store = Store()
 
-    def prompt_file_input(self):
-        while True:
-            path = input("Enter an excel file to process orders: ")
-            if ".xlsx" not in path:
-                print("Error: File must be a type of .xlsx extension.\n")
-            else:
-                break
-        self.order_processor.path = path
-
     def process_web_orders(self):
         try:
-            self.prompt_file_input()
             orders = self.order_processor.get_orders()
             order_count = 0
             for order in orders:
@@ -37,7 +27,7 @@ class UserMenu:
     def check_inventory(self):
         table = texttable.Texttable()
         table.set_deco(table.HEADER)
-        table.add_rows([["Name",    "Stock", "Quantity"]])
+        table.add_rows([["Item Name",    "Stock", "Quantity"]])
         table.set_cols_align(["l", "r", "r"])
         table.set_cols_dtype(['t',  # text
                               't',  # float (decimal)
@@ -64,6 +54,10 @@ class UserMenu:
         print("Exiting program...")
         time.sleep(0.5)
         exit()
+
+    @staticmethod
+    def load_intro(self):
+        pass
 
 
 def execute_program():
