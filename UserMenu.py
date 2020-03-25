@@ -40,6 +40,9 @@ class UserMenu:
         print(logo)
 
     def process_web_orders(self):
+        """
+        Allows users to process new web orders into the system
+        """
         print("\n\n>>Process web orders<<")
         print("-" * self.BORDER_LENGTH)
         try:
@@ -55,6 +58,8 @@ class UserMenu:
         print("-" * self.BORDER_LENGTH + "\n\n")
 
     def check_inventory(self):
+        """Allows users to check current inventory and shows outputs in a
+        Texttable object"""
         print("\n\n>>CheckInventory<<")
         print("-" * self.BORDER_LENGTH)
         if not self.store.inventory:
@@ -85,6 +90,7 @@ class UserMenu:
         print("-" * self.BORDER_LENGTH + "\n\n")
 
     def exit_program(self):
+        """Creates order history report and exits program"""
         print("\n\n>>Exit Program<<")
         print("-" * self.BORDER_LENGTH)
         print("Printing report...\n")
@@ -95,7 +101,8 @@ class UserMenu:
         print("-" * self.BORDER_LENGTH + "\n\n")
         exit()
 
-    def execute_program(self):
+    def execute_menu(self):
+        """Executes main program"""
         UserMenu.__load_intro()
         menu_options = {
             1: self.process_web_orders,
@@ -124,7 +131,7 @@ class UserMenu:
 
 def main():
     program = UserMenu()
-    program.execute_program()
+    program.execute_menu()
 
 
 if __name__ == "__main__":
