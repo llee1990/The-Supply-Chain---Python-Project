@@ -31,11 +31,17 @@ class Item(ABC):
         :param quantity: A String
         :param order_number: A String
         """
+        self._error_message = ''
+        if not product_id[0].isalpha() and not product_id[1:].isdigit():
+            self._error_message += '"product_id" is not the correct format. '
+        if int(quantity) < 1:
+            self._error_message += '"quantity" must be greater than "1"'
+        if not order_number.isdigit():
+            self._error_message += '"Order number" must be a number'
         self._name = name
         self._description = description
         self._product_id = product_id
         self._quantity = quantity
-        self._error_message = ''
         self._order_number = order_number
 
     @property
