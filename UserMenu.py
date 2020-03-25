@@ -13,7 +13,6 @@ class UserMenu:
     def __init__(self):
         self.order_processor = OrderProcessor()
         self.store = Store()
-        UserMenu.load_intro()
 
     @staticmethod
     def load_intro():
@@ -35,7 +34,7 @@ class UserMenu:
         print(str)
 
     def process_web_orders(self):
-        print("\n\n1. Process web orders")
+        print("\n\n>>Process web orders<<")
         print("-" * self.BORDER_LENGTH)
         try:
             orders = self.order_processor.get_orders()
@@ -50,7 +49,7 @@ class UserMenu:
         print("-" * self.BORDER_LENGTH + "\n\n")
 
     def check_inventory(self):
-        print("\n\n2. CheckInventory")
+        print("\n\n>>CheckInventory<<")
         print("-" * self.BORDER_LENGTH)
         if not self.store.inventory:
             print("No items in inventory...")
@@ -80,7 +79,7 @@ class UserMenu:
         print("-" * self.BORDER_LENGTH + "\n\n")
 
     def exit_program(self):
-        print("\n\n3. Exit Program")
+        print("\n\n>>Exit Program<<")
         print("-" * self.BORDER_LENGTH)
         print("Printing report...\n")
         self.store.create_report()
@@ -91,6 +90,7 @@ class UserMenu:
         exit()
 
     def execute_program(self):
+        UserMenu.load_intro()
         menu_options = {
             1: self.process_web_orders,
             2: self.check_inventory,
