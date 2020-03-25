@@ -22,65 +22,65 @@ class SeasonalItemFactory(ABC):
 
     def create_items(self, item_type, **order):
         if item_type == ItemEnum.TOY.value:
-            return self.create_toy(**order)
+            return self._create_toy(**order)
         if item_type == ItemEnum.STUFFED_ANIMAL.value:
-            return self.create_stuffed_animal(**order)
+            return self._create_stuffed_animal(**order)
         if item_type == ItemEnum.CANDY.value:
-            return self.create_candy(**order)
+            return self._create_candy(**order)
 
     @abstractmethod
-    def create_toy(self, **kwargs):
+    def _create_toy(self, **kwargs):
         pass
 
     @abstractmethod
-    def create_stuffed_animal(self, **kwargs):
+    def _create_stuffed_animal(self, **kwargs):
         pass
 
     @abstractmethod
-    def create_candy(self, **kwargs):
+    def _create_candy(self, **kwargs):
         pass
 
 
 class ChristmasItemFactory(SeasonalItemFactory):
 
     def __init__(self):
-        pass
+        super().__init__()
 
-    def create_toy(self, **kwargs) -> SantaWorkshop:
+    def _create_toy(self, **kwargs) -> SantaWorkshop:
         return SantaWorkshop(**kwargs)
 
-    def create_stuffed_animal(self, **kwargs) -> Reindeer:
+    def _create_stuffed_animal(self, **kwargs) -> Reindeer:
         return Reindeer(**kwargs)
 
-    def create_candy(self, **kwargs) -> CandyCane:
+    def _create_candy(self, **kwargs) -> CandyCane:
         return CandyCane(**kwargs)
 
 
 class HalloweenItemFactory(SeasonalItemFactory):
 
     def __init__(self):
-        pass
+        super().__init__()
 
-    def create_toy(self, **kwargs) -> RCSpider:
+    def _create_toy(self, **kwargs) -> RCSpider:
         return RCSpider(**kwargs)
 
-    def create_stuffed_animal(self, **kwargs) -> DancingSkeletons:
+    def _create_stuffed_animal(self, **kwargs) -> DancingSkeletons:
         return DancingSkeletons(**kwargs)
 
-    def create_candy(self, **kwargs) -> PumpkinCaramelToffee:
+    def _create_candy(self, **kwargs) -> PumpkinCaramelToffee:
         return PumpkinCaramelToffee(**kwargs)
 
 
 class EasterItemFactory(SeasonalItemFactory):
 
     def __init__(self):
-        pass
+        super().__init__()
 
-    def create_toy(self, **kwargs) -> RobotBunny:
+    def _create_toy(self, **kwargs) -> RobotBunny:
         return RobotBunny(**kwargs)
 
-    def create_stuffed_animal(self, **kwargs) -> EasterBunny:
+    def _create_stuffed_animal(self, **kwargs) -> EasterBunny:
         return EasterBunny(**kwargs)
 
-    def create_candy(self, **kwargs) -> CremeEggs:
+    def _create_candy(self, **kwargs) -> CremeEggs:
         return CremeEggs(**kwargs)

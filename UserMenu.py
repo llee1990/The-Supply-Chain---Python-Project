@@ -48,10 +48,11 @@ class UserMenu:
 
     def exit_program(self):
         print("Printing report...")
-        self.store.create_report(self.order_processor)
+        self.store.create_report()
         time.sleep(0.5)
         print("Exiting program...")
         time.sleep(0.5)
+        exit()
 
 
 def execute_program():

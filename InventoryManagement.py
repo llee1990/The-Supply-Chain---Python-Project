@@ -90,7 +90,6 @@ class Store:
         factory = order.factory
         order_name = order.name
         order_amount = int(order.product_details['quantity'])
-        new_item = None
         try:
             # try processing an order
             new_item = factory.create_items(item_type=order.item_type,
@@ -101,7 +100,7 @@ class Store:
             print("\n ERROR")
             order_error_message = str(ide)
             print(order_error_message)
-            # self.append_order_history(order, order_error_message)
+            self.update_order_history(order, order_error_message)
 
         else:
             # no error in processing the order
@@ -121,11 +120,12 @@ class Store:
 
             self.update_inventory_item(order, order_amount)
             print(new_item)
-            # self.append_order_history(order, new_item)
+            print(new_item.error_message)
+            self.update_order_history(order, new_item.error_message)
 
-    # def append_order_history2(self, order, message):
-    #     self.order_history.append(message)
-    #
+    def update_order_history(self, order, message):
+        self.order_history.append([order, message])
+
     # def append_order_history(self, order, item):
     #     if item.error_message == "":
     #         self.order_history.append(order.get_order_history())
@@ -133,12 +133,16 @@ class Store:
     #         self.order_history.append(f"Order {item.order_number}, "
     #                                   f"{item.error_message})")
 
-    # def get_order_history(self):
-    #     TODO: implement
-    #     history = ""
-    #     for order in self.order_history:
-    #         history += order.__str__()
-    #     return history
+    def get_order_history(self):
+        order_history = ""
+        for order in self.order_history:
+            if order[1] == "":      # order was processed successfully
+                order_history += f"{order[0].get_order_history()}\n"
+            else:
+                order_history += f"Order {order[0].order_number}, " \
+                                 f"{order[1]}\n\n"
+        print(order_history)
+        return order_history
 
     def create_report(self):
         local_time = time.localtime()
@@ -155,8 +159,8 @@ class Store:
         with open(f"{file_name}.txt", mode='w', encoding='utf-8') as file:
             title = 'HOLIDAY STORE - DAILY TRANSACTION REPORT(DRT)\n'
             date_time = f"{day}-{month}-{year} {hour}:{minute}\n\n"
-            orders = "\n".join(self.order_history)
-            data = title + date_time + orders
+            all_orders = self.get_order_history()
+            data = title + date_time + all_orders
             file.write(data)
 
 
