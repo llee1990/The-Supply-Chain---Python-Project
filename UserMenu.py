@@ -19,7 +19,7 @@ class UserMenu:
         """
         generated from http://patorjk.com/
         """
-        str = "\n" \
+        logo = "\n" \
               "       🎃 🎃 🎃    🐰    🐰    🎅🎅🎅🎅 \n" \
               "          🎃       🐰    🐰    🎅     \n" \
               "          🎃       🐰🐰🐰🐰    🎅🎅🎅 \n" \
@@ -31,7 +31,7 @@ class UserMenu:
               "    🐰🐰🐰      🎅 🎅 🎅    🎁     🎁    🎃🎃🎃 \n" \
               "         🐰     🎅    🎅    🎁    🎁     🎃      \n" \
               "   🐰🐰🐰🐰      🎅    🎅     🎁🎁🎁      🎃       \n"
-        print(str)
+        print(logo)
 
     def process_web_orders(self):
         print("\n\n>>Process web orders<<")
