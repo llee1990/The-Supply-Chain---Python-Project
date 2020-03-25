@@ -22,13 +22,17 @@ class UserMenu:
         self.order_processor.path = path
 
     def process_web_orders(self):
-        self.prompt_file_input()
-        order_count = 0
-        orders = self.order_processor.get_orders()
-        for order in orders:
-            self.store.process_item(order)
-            order_count += 1
-        print(f"\nSuccessfully processed {order_count} orders...\n")
+        try:
+            self.prompt_file_input()
+            orders = self.order_processor.get_orders()
+            order_count = 0
+            for order in orders:
+                self.store.process_item(order)
+                order_count += 1
+        except FileNotFoundError as fne:
+            print("Error: " + str(fne))
+        else:
+            print(f"\nSuccessfully processed {order_count} orders...\n")
 
     def check_inventory(self):
         table = texttable.Texttable()

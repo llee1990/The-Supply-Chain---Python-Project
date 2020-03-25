@@ -28,20 +28,10 @@ class OrderProcessor:
     def path(self, value):
         self._path = value
 
-    # def add_orders(self, order):
-    #     self.order_list.append(order)
-    #
-    # def clear_order_list(self):
-    #     self.order_list = []
-
     def get_orders(self):
-        try:
-            excel_df = pandas.read_excel(self.path)
-        except FileNotFoundError as fne:
-            print("Error: " + str(fne))
-        else:
-            for row in excel_df.iterrows():
-                yield Order(**row[1])
+        excel_df = pandas.read_excel(self.path)
+        for row in excel_df.iterrows():
+            yield Order(**row[1])
 
 
 class Order:
@@ -117,9 +107,6 @@ class Store:
         self.inventory = {}
         self.order_history = []
 
-    # def receive_order(self, order):
-    #     self.__process_item(order)
-
     def update_inventory_item(self, order, quantity):
         while quantity != 0:
             self.inventory[order.name].pop()
@@ -193,7 +180,7 @@ def main():
     a = OrderProcessor()
     c = Store()
     for order in a.get_orders():
-        c.receive_order(order)
+        c.process_item(order)
 
 
 if __name__ == "__main__":
