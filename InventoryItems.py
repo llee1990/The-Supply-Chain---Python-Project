@@ -16,10 +16,21 @@ class ItemEnum(Enum):
 
 
 class Item(ABC):
-    """Abstract class for Item, parent class of all items that can be
-    created"""
+    """
+    Abstract class for Item, parent class of all items that can be
+    created
+    """
 
     def __init__(self, name, description, product_id, quantity, order_number):
+        """
+        Initializes an Item object
+
+        :param name: A String
+        :param description: A String
+        :param product_id: A String
+        :param quantity: A String
+        :param order_number: A String
+        """
         self._name = name
         self._description = description
         self._product_id = product_id
@@ -29,16 +40,35 @@ class Item(ABC):
 
     @property
     def error_message(self):
+        """
+        Getter for self._error_message
+        :return: self._error_message
+        """
         return self._error_message
 
     @property
     def order_number(self):
+        """
+        Getter for self._error_number
+        :return: self._error_number
+        """
         return self._order_number
 
 
 class Toy(Item):
+    """
+    The Toy class is the parent class of all toy items.
+    """
 
     def __init__(self, min_age, has_batteries, **kwargs):
+        """
+        Initializes a Toy object
+
+        :param min_age: A String
+        :param has_batteries: A String
+        :param kwargs: Keyword arguments containing item attributes
+        that are passed to super()
+        """
         super().__init__(**kwargs)
         if min_age < 1:
             self._error_message += '"min_age" must be greater than "1". '
@@ -47,8 +77,19 @@ class Toy(Item):
 
 
 class SantaWorkshop(Toy):
+    """
+    The SantaWorkshop class creates SantaWorkshop toys
+    """
 
     def __init__(self, dimensions, num_rooms, **kwargs):
+        """
+        Initializes a SantaWorkshop object
+
+        :param dimensions: A String
+        :param num_rooms: A String
+        :param kwargs: Keyword arguments containing item attributes
+        that are passed to super()
+        """
         super().__init__(**kwargs)
         if self._has_batteries.upper() != "N":
             self._error_message += '"has_batteries" must be "N". '
@@ -59,14 +100,11 @@ class SantaWorkshop(Toy):
         self._dimensions = dimensions
         self._num_rooms = num_rooms
 
-    def __str__(self):
-
-        return f"{self._name}, {self._description}, {self._product_id}, " \
-               f"{self._quantity}, {self._min_age}, {self._has_batteries}, " \
-               f"{self._dimensions}, {self._num_rooms}"
-
 
 class RCSpider(Toy):
+    """
+    The RCSpider class creates RCSpider toys
+    """
 
     def __init__(self, speed, jump_height, has_glow,
                  spider_type, **kwargs):
