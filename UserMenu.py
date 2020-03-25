@@ -16,7 +16,7 @@ class UserMenu:
         order_count = 0
         orders = self.order_processor.get_orders()
         for order in orders:
-            self.store.receive_order(order)
+            self.store.process_item(order)
             order_count += 1
         print(f"\nSuccessfully processed {order_count} orders...\n")
 

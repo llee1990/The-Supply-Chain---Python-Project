@@ -98,15 +98,15 @@ class Store:
         self.inventory = {}
         self.order_history = []
 
-    def receive_order(self, order):
-        self.__process_item(order)
+    # def receive_order(self, order):
+    #     self.__process_item(order)
 
     def update_inventory_item(self, order, quantity):
         while quantity != 0:
             self.inventory[order.name].pop()
             quantity -= 1
 
-    def __process_item(self, order):
+    def process_item(self, order):
         factory = order.factory
         name = order.name
         order_amount = int(order.product_details['quantity'])
