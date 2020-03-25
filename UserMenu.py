@@ -56,7 +56,7 @@ class UserMenu:
         exit()
 
     @staticmethod
-    def load_intro(self):
+    def load_intro():
         pass
 
 
@@ -88,7 +88,8 @@ def execute_program():
 
 
 def main():
-    execute_program()
+    program = UserMenu()
+    program.execute_program()
 
 
 if __name__ == "__main__":
