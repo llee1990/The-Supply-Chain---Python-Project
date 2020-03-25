@@ -17,7 +17,7 @@ class OrderProcessor:
     }
 
     def __init__(self, path):
-        self.path = path
+        self._path = path
         self.order_list = []
 
     def add_orders(self, order):
@@ -27,7 +27,7 @@ class OrderProcessor:
         self.order_list = []
 
     def get_orders(self):
-        excel_df = pandas.read_excel(self.path)
+        excel_df = pandas.read_excel(self._path)
         for row in excel_df.iterrows():
             yield Order(**row[1])
 
@@ -36,24 +36,51 @@ class Order:
 
     def __init__(self, order_number, product_id, item, name, holiday,
                  **kwargs):
-        self.order_number = order_number
-        self.product_id = product_id
-        self.item_type = item
-        self.name = name
-        self.holiday = holiday
-        self.factory = OrderProcessor.factory_map[FactoryEnum(holiday)]()
-        # Product details to instantiate Item objects
-        self.product_details = {'name': name, 'product_id': product_id,
-                                'order_number': order_number}
+        self._order_number = order_number
+        self._product_id = product_id
+        self._item_type = item
+        self._name = name
+        self._holiday = holiday
+        self._factory = OrderProcessor.factory_map[FactoryEnum(holiday)]()
+        self._product_details = {'name': name, 'product_id': product_id,
+                                 'order_number': order_number}
         for arg, value in kwargs.items():
             if arg != "holiday" and not pandas.isnull(value):
-                self.product_details[arg] = value
+                self._product_details[arg] = value
+
+    @property
+    def order_number(self):
+        return self._order_number
+
+    @property
+    def product_id(self):
+        return self._product_id
+
+    @property
+    def item_type(self):
+        return self._item_type
+
+    @property
+    def name(self):
+        return self._name
+
+    @property
+    def holiday(self):
+        return self._holiday
+
+    @property
+    def factory(self):
+        return self._factory
+
+    @property
+    def product_details(self):
+        return self._product_details
 
     def get_order_history(self):
         history = ""
         history += f"Order {self.order_number}, Item {self.item_type}, "\
-                f"Product ID {self.product_id}, Name \"{self.name}\", " \
-                f"Quantity {self.product_details['quantity']}\n"
+                   f"Product ID {self.product_id}, Name \"{self.name}\", " \
+                   f"Quantity {self.product_details['quantity']}\n"
         return history
 
     def __str__(self):
@@ -79,59 +106,46 @@ class Store:
         self.order_history = []
 
     def receive_order(self, order):
-        self.process_item(order)
+        self.__process_item(order)
 
     def update_inventory_item(self, order, quantity):
         while quantity != 0:
             self.inventory[order.name].pop()
             quantity -= 1
 
-    def process_item(self, order):
+    def __process_item(self, order):
         factory = order.factory
-        order_name = order.name
+        name = order.name
         order_amount = int(order.product_details['quantity'])
-        try:
-            # try processing an order
+
+        try:    # processing an order
             new_item = factory.create_items(item_type=order.item_type,
                                             **order.product_details)
 
-        except InvalidDataError as ide:
-            # encountered error while processing
-            print("\n ERROR")
+        except InvalidDataError as ide:  # encountered error while processing
             order_error_message = str(ide)
-            print(order_error_message)
-            self.update_order_history(order, order_error_message)
+            self.__append_order_history(order, order_error_message)
 
-        else:
-            # no error in processing the order
-            print("\n NO ERROR")
+        else:   # no error in processing the order
+
             # item does not exist in inventory
-            if order_name not in self.inventory:
-                self.inventory[order_name] = [new_item for _
-                                              in
-                                              range(self.DEFAULT_ORDER_SIZE)]
+            if name not in self.inventory:
+                self.inventory[name] = [new_item for _
+                                        in
+                                        range(self.DEFAULT_ORDER_SIZE)]
 
             # item quantity is less than the order amount
-            elif len(self.inventory[order_name]) < order_amount:
+            elif len(self.inventory[name]) < order_amount:
                 curr_quantity = int(len(self.inventory[order]))
-                self.inventory[order_name] = [new_item for _
-                                              in range(self.DEFAULT_ORDER_SIZE
-                                                       + curr_quantity)]
+                self.inventory[name] = [new_item for _
+                                        in range(self.DEFAULT_ORDER_SIZE
+                                                 + curr_quantity)]
 
             self.update_inventory_item(order, order_amount)
-            print(new_item)
-            print(new_item.error_message)
-            self.update_order_history(order, new_item.error_message)
+            self.__append_order_history(order, new_item.error_message)
 
-    def update_order_history(self, order, message):
+    def __append_order_history(self, order, message):
         self.order_history.append([order, message])
-
-    # def append_order_history(self, order, item):
-    #     if item.error_message == "":
-    #         self.order_history.append(order.get_order_history())
-    #     else:
-    #         self.order_history.append(f"Order {item.order_number}, "
-    #                                   f"{item.error_message})")
 
     def get_order_history(self):
         order_history = ""
@@ -141,7 +155,6 @@ class Store:
             else:
                 order_history += f"Order {order[0].order_number}, " \
                                  f"{order[1]}\n\n"
-        print(order_history)
         return order_history
 
     def create_report(self):
