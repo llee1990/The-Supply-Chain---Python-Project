@@ -23,10 +23,6 @@ class OrderProcessor:
     def path(self):
         return self._path
 
-    @path.setter
-    def path(self, value):
-        self._path = value
-
     def prompt_file_input(self):
         while True:
             path = input("Enter an excel file to process orders: ")
@@ -34,7 +30,7 @@ class OrderProcessor:
                 print("Error: File must be a type of .xlsx extension.\n")
             else:
                 break
-        self.path = path
+        self._path = path
 
     def get_orders(self):
         self.prompt_file_input()
