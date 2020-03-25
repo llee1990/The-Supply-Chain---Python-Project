@@ -1,18 +1,23 @@
 """
+This module contains all the types of inventory items that can be created by
+the inventory system.
 """
 
-from abc import ABC, abstractmethod
+from abc import ABC
 from enum import Enum
 from ErrorHandling import InvalidDataError
 
 
 class ItemEnum(Enum):
+    """Enum class for types of Items"""
     TOY = "Toy"
     STUFFED_ANIMAL = "StuffedAnimal"
     CANDY = "Candy"
 
 
 class Item(ABC):
+    """Abstract class for Item, parent class of all items that can be
+    created"""
 
     def __init__(self, name, description, product_id, quantity, order_number):
         self._name = name
