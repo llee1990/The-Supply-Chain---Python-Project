@@ -1,5 +1,5 @@
 """
-
+This module contains custom exceptions
 """
 
 

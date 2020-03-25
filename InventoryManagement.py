@@ -1,4 +1,5 @@
 """
+This module contains classes that are involved with inventory management
 """
 
 import pandas
@@ -64,7 +65,7 @@ class Order:
         """
         Initializes a Order object
 
-        :param order_number: A String
+        :param order_number: an int
         :param product_id: A String
         :param item: A String
         :param name: A String

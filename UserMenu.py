@@ -1,5 +1,5 @@
 """
-
+This module contains classes that are involved with the user facing interface
 """
 from InventoryManagement import OrderProcessor, Store
 import time
