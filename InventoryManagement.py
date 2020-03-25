@@ -84,7 +84,7 @@ class Store:
 
     def update_inventory_item(self, order, quantity):
         while quantity != 0:
-            self.inventory[order].pop()
+            self.inventory[order.name].pop()
             quantity -= 1
 
     def process_item(self, order):
@@ -119,7 +119,6 @@ class Store:
 
         # TODO: Add method to update order_history
 
-
     def append_order_history(self, order, item):
         if item.error_message != "":
             self.order_history.append(order.get_order_history())
@@ -127,14 +126,12 @@ class Store:
             self.order_history.append(f"Order {item.order_number}, "
                                       f"{item.error_message})")
 
-
     # def get_order_history(self):
     #     TODO: implement
     #     history = ""
     #     for order in self.order_history:
     #         history += order.__str__()
     #     return history
-
 
     def create_report(self):
         local_time = time.localtime()
@@ -154,6 +151,7 @@ class Store:
             orders = "\n".join(self.order_history)
             data = title + date_time + orders
             file.write(data)
+
 
 def main():
 

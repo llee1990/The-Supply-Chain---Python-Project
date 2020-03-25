@@ -26,7 +26,7 @@ class Item(ABC):
 
 class Toy(Item):
 
-    def __init__(self, min_age, has_batteries, order_number, **kwargs):
+    def __init__(self, min_age, has_batteries, **kwargs):
         super().__init__(**kwargs)
         if min_age < 1:
             self.error_message += '"min_age" must be greater than "1". '
@@ -66,9 +66,9 @@ class RCSpider(Toy):
             self.error_message += '"speed" must be greater than "1". '
         if jump_height < 1:
             self.error_message += '"jump_height" must be greater than "1". '
-        if has_glow.upper() != "N" or has_glow.upper() != "Y":
+        if has_glow.upper() != "N" and has_glow.upper() != "Y":
             self.error_message += '"has_glow" must be set to "Y" or "N". '
-        if spider_type.upper() != "Tarantula" or \
+        if spider_type.upper() != "Tarantula" and \
                 spider_type.upper() != "Wolf Spider":
             self.error_message += '"spider_type" must be either "Tarantula" ' \
                                   'or "Wolf Spider". '
@@ -170,7 +170,7 @@ class PumpkinCaramelToffee(Candy):
             self.error_message += '"has_lactose" must be "N". '
         if self.has_nuts != "Y":
             self.error_message += '"has_nuts" must be "Y". '
-        if variety.title() != "Sea Salt" or variety.title() != "Regular":
+        if variety.title() != "Sea Salt" and variety.title() != "Regular":
             self.error_message += '"variety" must be "Sea Salt" or "Regular". '
         self.variety = variety
         if self.error_message != '':
@@ -186,7 +186,7 @@ class CandyCane(Candy):
             self.error_message += '"has_lactose" must be "Y". '
         if self.has_nuts != "N":
             self.error_message += '"has_nuts" must be "N". '
-        if colour.title() != "Red" or colour.title() != "Green":
+        if colour.title() != "Red" and colour.title() != "Green":
             self.error_message += '"colour" must be "Red" or "Green". '
         self.colour = colour
         if self.error_message != '':
