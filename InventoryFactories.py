@@ -20,13 +20,13 @@ class SeasonalItemFactory(ABC):
     def __init__(self):
         pass
 
-    def create_items(self, item_type, **order):
+    def create_items(self, item_type, **kwargs):
         if item_type == ItemEnum.TOY.value:
-            return self._create_toy(**order)
+            return self._create_toy(**kwargs)
         if item_type == ItemEnum.STUFFED_ANIMAL.value:
-            return self._create_stuffed_animal(**order)
+            return self._create_stuffed_animal(**kwargs)
         if item_type == ItemEnum.CANDY.value:
-            return self._create_candy(**order)
+            return self._create_candy(**kwargs)
 
     @abstractmethod
     def _create_toy(self, **kwargs):
