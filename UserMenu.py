@@ -52,6 +52,7 @@ class UserMenu:
         time.sleep(0.5)
         print("Exiting program...")
         time.sleep(0.5)
+        exit()
 
 
 def execute_program():

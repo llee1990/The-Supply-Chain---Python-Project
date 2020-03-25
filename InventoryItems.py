@@ -15,22 +15,23 @@ class ItemEnum(Enum):
 
 class Item(ABC):
 
-    def __init__(self, name, description, product_id, quantity):
+    def __init__(self, name, description, product_id, quantity, order_number):
         self.name = name
         self.description = description
         self.product_id = product_id
         self.quantity = quantity
         self.error_message = ''
+        self.order_number = order_number
 
 
 class Toy(Item):
 
-    def __init__(self, min_age, has_batteries, **kwargs):
+    def __init__(self, min_age, has_batteries, order_number, **kwargs):
         super().__init__(**kwargs)
         if min_age < 1:
             self.error_message += '"min_age" must be greater than "1". '
         self.min_age = min_age
-        self.has_batteries = has_batteries
+        self.has_batteries = has_batteries   
 
 
 class SantaWorkshop(Toy):
@@ -46,6 +47,12 @@ class SantaWorkshop(Toy):
         if self.error_message != '':
             print(self.error_message)
             raise InvalidDataError
+        
+    def __str__(self):
+        
+        return f"{self.name}, {self.description}, {self.product_id}, " \
+               f"{self.quantity}, {self.min_age}, {self.has_batteries}, " \
+               f"{self.dimensions}, {self.num_rooms}"
 
 
 class RCSpider(Toy):

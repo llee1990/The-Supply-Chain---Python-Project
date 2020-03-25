@@ -7,6 +7,7 @@ import time
 from datetime import date
 from InventoryFactories import ChristmasItemFactory, EasterItemFactory,\
     HalloweenItemFactory, FactoryEnum
+from ErrorHandling import InvalidDataError
 
 
 class OrderProcessor:
@@ -31,14 +32,6 @@ class OrderProcessor:
         for row in excel_df.iterrows():
             yield Order(**row[1])
 
-    def order_history(self):
-        history = ""
-        for order in self.order_list:
-            history += f"Order {order.order_number}, Item {order.item_type}, "\
-                f"Product ID {order.product_id}, Name \"{order.name}\", " \
-                f"Quantity {order.product_details['quantity']}\n"
-        return history
-
 
 class Order:
 
@@ -51,10 +44,18 @@ class Order:
         self.holiday = holiday
         self.factory = OrderProcessor.factory_map[FactoryEnum(holiday)]()
         # Product details to instantiate Item objects
-        self.product_details = {'name': name, 'product_id': product_id}
+        self.product_details = {'name': name, 'product_id': product_id,
+                                'order_number': order_number}
         for arg, value in kwargs.items():
             if arg != "holiday" and not pandas.isnull(value):
                 self.product_details[arg] = value
+
+    def get_order_history(self):
+        history = ""
+        history += f"Order {self.order_number}, Item {self.item_type}, "\
+                f"Product ID {self.product_id}, Name \"{self.name}\", " \
+                f"Quantity {self.product_details['quantity']}\n"
+        return history
 
     def __str__(self):
         separator = "-" * 20
@@ -83,40 +84,59 @@ class Store:
 
     def update_inventory_item(self, order, quantity):
         while quantity != 0:
-            del self.inventory[order][-1]
+            self.inventory[order].pop()
             quantity -= 1
 
     def process_item(self, order):
         factory = order.factory
         order_name = order.name
-        new_item = factory.create_items(item_type=order.item_type,
-                                        **order.product_details)
-        order_amount = int(order.product_details['quantity'])
+        try:
+            new_item = factory.create_items(item_type=order.item_type,
+                                            **order.product_details)
+            self.append_order_history(order, new_item)
+            order_amount = int(order.product_details['quantity'])
 
-        # item does not exist in inventory
-        if order_name not in self.inventory:
-            self.inventory[order_name] = [new_item for _
-                                          in range(self.DEFAULT_ORDER_SIZE)]
+            # item does not exist in inventory
+            if order_name not in self.inventory:
+                self.inventory[order_name] = [new_item for _
+                                              in
+                                              range(self.DEFAULT_ORDER_SIZE)]
 
-        # item quantity is less than the order amount
-        elif len(self.inventory[order_name]) < order_amount:
-            curr_quantity = int(len(self.inventory[order]))
-            self.inventory[order_name] = [new_item for _
-                                          in range(self.DEFAULT_ORDER_SIZE
-                                                   + curr_quantity)]
+            # item quantity is less than the order amount
+            elif len(self.inventory[order_name]) < order_amount:
+                curr_quantity = int(len(self.inventory[order]))
+                self.inventory[order_name] = [new_item for _
+                                              in range(self.DEFAULT_ORDER_SIZE
+                                                       + curr_quantity)]
 
-        self.update_inventory_item(order, order_amount)
+            self.update_inventory_item(order, order_amount)
+
+        except InvalidDataError:
+            new_item = factory.create_items(item_type=order.item_type,
+                                            **order.product_details)
+            self.append_order_history(order, new_item)
+            pass
+
         # TODO: Add method to update order_history
 
-    def get_order_history(self):
-        # TODO: implement
-        history = ""
-        for order in self.order_history:
-            history += order.__str__()
-        return history
 
-    @staticmethod
-    def create_report(orders):
+    def append_order_history(self, order, item):
+        if item.error_message != "":
+            self.order_history.append(order.get_order_history())
+        else:
+            self.order_history.append(f"Order {item.order_number}, "
+                                      f"{item.error_message})")
+
+
+    # def get_order_history(self):
+    #     TODO: implement
+    #     history = ""
+    #     for order in self.order_history:
+    #         history += order.__str__()
+    #     return history
+
+
+    def create_report(self):
         local_time = time.localtime()
         day = date.today().day
         if day < 10:
@@ -131,6 +151,17 @@ class Store:
         with open(f"{file_name}.txt", mode='w', encoding='utf-8') as file:
             title = 'HOLIDAY STORE - DAILY TRANSACTION REPORT(DRT)\n'
             date_time = f"{day}-{month}-{year} {hour}:{minute}\n\n"
-            orders = orders.get_order_history()
+            orders = "\n".join(self.order_history)
             data = title + date_time + orders
             file.write(data)
+
+def main():
+
+    a = OrderProcessor("orders.xlsx")
+    c = Store()
+    for order in a.get_orders():
+        c.receive_order(order)
+
+
+if __name__ == "__main__":
+    main()
