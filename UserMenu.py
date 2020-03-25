@@ -13,15 +13,12 @@ class UserMenu:
         self.store = Store()
 
     def process_web_orders(self):
+        order_count = 0
         orders = self.order_processor.get_orders()
         for order in orders:
-            self.order_processor.add_orders(order)
-        for order in self.order_processor.order_list:
             self.store.receive_order(order)
-        print(f"\nSuccessfully processed "
-              f"{len(self.order_processor.order_list)} "
-              f"orders...\n")
-        self.order_processor.clear_order_list()
+            order_count += 1
+        print(f"\nSuccessfully processed {order_count} orders...\n")
 
     def check_inventory(self):
         table = texttable.Texttable()

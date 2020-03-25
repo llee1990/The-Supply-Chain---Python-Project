@@ -18,13 +18,6 @@ class OrderProcessor:
 
     def __init__(self, path):
         self._path = path
-        self.order_list = []
-
-    def add_orders(self, order):
-        self.order_list.append(order)
-
-    def clear_order_list(self):
-        self.order_list = []
 
     def get_orders(self):
         excel_df = pandas.read_excel(self._path)
