@@ -121,9 +121,23 @@ class Store:
             self.inventory[order.name].pop()
             quantity -= 1
 
+    def __check_inventory(self, order, new_item, amount):
+        # item does not exist in inventory
+        name = order.name
+        if name not in self.inventory:
+            self.inventory[name] = [new_item for _
+                                    in
+                                    range(self.DEFAULT_ORDER_SIZE)]
+
+        # item quantity is less than the order amount
+        elif len(self.inventory[name]) < amount:
+            curr_quantity = int(len(self.inventory[order]))
+            self.inventory[name] = [new_item for _
+                                    in range(self.DEFAULT_ORDER_SIZE
+                                             + curr_quantity)]
+
     def process_item(self, order):
         factory = order.factory
-        name = order.name
         order_amount = int(order.product_details['quantity'])
 
         try:    # processing an order
@@ -135,25 +149,12 @@ class Store:
             self.__append_order_history(order, order_error_message)
 
         else:   # no error in processing the order
-
-            # item does not exist in inventory
-            if name not in self.inventory:
-                self.inventory[name] = [new_item for _
-                                        in
-                                        range(self.DEFAULT_ORDER_SIZE)]
-
-            # item quantity is less than the order amount
-            elif len(self.inventory[name]) < order_amount:
-                curr_quantity = int(len(self.inventory[order]))
-                self.inventory[name] = [new_item for _
-                                        in range(self.DEFAULT_ORDER_SIZE
-                                                 + curr_quantity)]
-
+            self.__check_inventory(order, new_item, order_amount)
             self.__update_inventory_item(order, order_amount)
             self.__append_order_history(order, new_item.error_message)
 
     def __append_order_history(self, order, message):
-        self.order_history.append([order, message])
+        self.order_history.append((order, message))
 
     def __get_order_history(self):
         order_history = ""
