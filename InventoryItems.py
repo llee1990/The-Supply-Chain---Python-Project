@@ -42,15 +42,15 @@ class Item(ABC):
     def error_message(self):
         """
         Getter for self._error_message
-        :return: self._error_message
+        :return: A String, the error message if any
         """
         return self._error_message
 
     @property
     def order_number(self):
         """
-        Getter for self._error_number
-        :return: self._error_number
+        Getter for self._order_number
+        :return: A String, the order number of the item
         """
         return self._order_number
 
@@ -129,8 +129,8 @@ class RCSpider(Toy):
             self._error_message += '"has_glow" must be set to "Y" or "N". '
         if spider_type.title() != "Tarantula" and \
                 spider_type.title() != "Wolf Spider":
-            self._error_message += '"spider_type" must be either "Tarantula" ' \
-                                  'or "Wolf Spider". '
+            self._error_message += \
+                '"spider_type" must be either "Tarantula" or "Wolf Spider". '
         if self._error_message != '':
             raise InvalidDataError(self.error_message)
         self._speed = speed
@@ -158,8 +158,8 @@ class RobotBunny(Toy):
             self._error_message += '"num_sound" must be greater than "1" '
         if colour.title() != "Orange" and colour.title() != "Blue" and \
                 colour.title() != "Pink":
-            self._error_message += '"colour" must be either "Orange", "Blue", '\
-                                  'or "Pink". '
+            self._error_message += '"colour" must be either ' \
+                                   '"Orange", "Blue", or "Pink". '
         if self._error_message != '':
             raise InvalidDataError(self.error_message)
         self._num_sound = num_sound
@@ -287,7 +287,8 @@ class PumpkinCaramelToffee(Candy):
         if self._has_nuts.upper() != "Y":
             self._error_message += '"has_nuts" must be "Y". '
         if variety.title() != "Sea Salt" and variety.title() != "Regular":
-            self._error_message += '"variety" must be "Sea Salt" or "Regular". '
+            self._error_message += \
+                '"variety" must be "Sea Salt" or "Regular". '
         if self._error_message != '':
             raise InvalidDataError(self.error_message)
         self._variety = variety

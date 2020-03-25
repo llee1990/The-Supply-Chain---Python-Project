@@ -7,17 +7,23 @@ import texttable
 
 
 class UserMenu:
+    """Creates a UserMenu that the user interacts with"""
 
+    # Default border length for the UI interface
     BORDER_LENGTH = 35
 
     def __init__(self):
+        """
+        Initializes a UserMenu object that stores an OrderProcessor and a
+        Store object.
+        """
         self.order_processor = OrderProcessor()
         self.store = Store()
 
     @staticmethod
     def __load_intro():
         """
-        generated from http://patorjk.com/
+        ASCII logo generated from http://patorjk.com/
         """
         logo = "\n" \
                "       🎃 🎃 🎃    🐰    🐰    🎅🎅🎅🎅 \n" \
