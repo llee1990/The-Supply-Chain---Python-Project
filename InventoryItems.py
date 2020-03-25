@@ -1,8 +1,7 @@
 """
-
 """
 
-from abc import ABC, abstractmethod
+from abc import ABC
 from enum import Enum
 from ErrorHandling import InvalidDataError
 
@@ -15,12 +14,13 @@ class ItemEnum(Enum):
 
 class Item(ABC):
 
-    def __init__(self, name, description, product_id, quantity):
+    def __init__(self, name, description, product_id, quantity, order_number):
         self.name = name
         self.description = description
         self.product_id = product_id
         self.quantity = quantity
         self.error_message = ''
+        self.order_number = order_number
 
 
 class Toy(Item):
@@ -44,8 +44,14 @@ class SantaWorkshop(Toy):
         self.dimensions = dimensions
         self.num_rooms = num_rooms
         if self.error_message != '':
-            print(self.error_message)
-            raise InvalidDataError
+            # print(self.error_message)
+            raise InvalidDataError(self.error_message)
+
+    def __str__(self):
+
+        return f"{self.name}, {self.description}, {self.product_id}, " \
+               f"{self.quantity}, {self.min_age}, {self.has_batteries}, " \
+               f"{self.dimensions}, {self.num_rooms}"
 
 
 class RCSpider(Toy):
@@ -59,10 +65,10 @@ class RCSpider(Toy):
             self.error_message += '"speed" must be greater than "1". '
         if jump_height < 1:
             self.error_message += '"jump_height" must be greater than "1". '
-        if has_glow.upper() != "N" or has_glow.upper() != "Y":
+        if has_glow.upper() != "N" and has_glow.upper() != "Y":
             self.error_message += '"has_glow" must be set to "Y" or "N". '
-        if spider_type.upper() != "Tarantula" or \
-                spider_type.upper() != "Wolf Spider":
+        if spider_type.title() != "Tarantula" and \
+                spider_type.title() != "Wolf Spider":
             self.error_message += '"spider_type" must be either "Tarantula" ' \
                                   'or "Wolf Spider". '
         self.speed = speed
@@ -70,7 +76,6 @@ class RCSpider(Toy):
         self.has_glow = has_glow
         self.spider_type = spider_type
         if self.error_message != '':
-            print(self.error_message)
             raise InvalidDataError
 
 
@@ -80,7 +85,7 @@ class RobotBunny(Toy):
         super().__init__(**kwargs)
         if num_sound < 1:
             self.error_message += '"num_sound" must be greater than "1" '
-            
+
         if colour.title() != "Orange" and colour.title() != "Blue" and \
                 colour.title() != "Pink":
             self.error_message += '"colour" must be either "Orange", "Blue", '\
@@ -88,7 +93,6 @@ class RobotBunny(Toy):
         self.num_sound = num_sound
         self.color = colour
         if self.error_message != '':
-            print(self.error_message)
             raise InvalidDataError
 
 
@@ -114,7 +118,6 @@ class DancingSkeletons(StuffedAnimal):
             self.error_message += '"fabric" must be "Acrylic". '
         self.has_glow = has_glow
         if self.error_message != '':
-            print(self.error_message)
             raise InvalidDataError
 
 
@@ -128,8 +131,6 @@ class Reindeer(StuffedAnimal):
             self.error_message += '"fabric" must be "Cotton". '
         self.has_glow = has_glow
         if self.error_message != '':
-            print(self.error_message)
-            print(self.error_message)
             raise InvalidDataError
 
 
@@ -143,8 +144,8 @@ class EasterBunny(StuffedAnimal):
             self.error_message += '"fabric" must be "Linen". '
         self.colour = colour
         if self.error_message != '':
-            print(self.error_message)
-            raise InvalidDataError
+            self.quantity = 0
+            raise InvalidDataError(self.error_message)
 
 
 class Candy(Item):
@@ -159,15 +160,14 @@ class PumpkinCaramelToffee(Candy):
 
     def __init__(self, variety, **kwargs):
         super().__init__(**kwargs)
-        if self.has_lactose != "N":
-            self.error_message += '"has_lactose" must be "N". '
-        if self.has_nuts != "Y":
+        if self.has_lactose.upper() != "Y":
+            self.error_message += '"has_lactose" must be "Y". '
+        if self.has_nuts.upper() != "Y":
             self.error_message += '"has_nuts" must be "Y". '
-        if variety.title() != "Sea Salt" or variety.title() != "Regular":
+        if variety.title() != "Sea Salt" and variety.title() != "Regular":
             self.error_message += '"variety" must be "Sea Salt" or "Regular". '
         self.variety = variety
         if self.error_message != '':
-            print(self.error_message)
             raise InvalidDataError
 
 
@@ -175,15 +175,14 @@ class CandyCane(Candy):
 
     def __init__(self, colour, **kwargs):
         super().__init__(**kwargs)
-        if self.has_lactose != "Y":
-            self.error_message += '"has_lactose" must be "Y". '
-        if self.has_nuts != "N":
+        if self.has_lactose.upper() != "N":
+            self.error_message += '"has_lactose" must be "N". '
+        if self.has_nuts.upper() != "N":
             self.error_message += '"has_nuts" must be "N". '
-        if colour.title() != "Red" or colour.title() != "Green":
+        if colour.title() != "Red" and colour.title() != "Green":
             self.error_message += '"colour" must be "Red" or "Green". '
         self.colour = colour
         if self.error_message != '':
-            print(self.error_message)
             raise InvalidDataError
 
 
@@ -191,15 +190,14 @@ class CremeEggs(Candy):
 
     def __init__(self, pack_size, **kwargs):
         super().__init__(**kwargs)
-        if self.has_lactose != "N":
-            self.error_message += '"has_lactose" must be "N". '
-        if self.has_nuts != "Y":
+        if self.has_lactose.upper() != "Y":
+            self.error_message += '"has_lactose" must be "Y". '
+        if self.has_nuts.upper() != "Y":
             self.error_message += '"has_nuts" must be "Y". '
         if pack_size < 5:
             self.error_message += '"has_nuts" must be greater than "5". '
         self.pack_size = pack_size
         if self.error_message != '':
-            print(self.error_message)
             raise InvalidDataError
 
 
