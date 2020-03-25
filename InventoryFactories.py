@@ -20,7 +20,7 @@ class SeasonalItemFactory(ABC):
     def __init__(self):
         pass
 
-    def create_items(self, item_type, **kwargs):
+    def create_item(self, item_type, **kwargs):
         if item_type == ItemEnum.TOY.value:
             return self._create_toy(**kwargs)
         if item_type == ItemEnum.STUFFED_ANIMAL.value:

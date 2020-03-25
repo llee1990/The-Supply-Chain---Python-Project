@@ -127,8 +127,8 @@ class Store:
         order_amount = int(order.product_details['quantity'])
 
         try:    # processing an order
-            new_item = factory.create_items(item_type=order.item_type,
-                                            **order.product_details)
+            new_item = factory.create_item(item_type=order.item_type,
+                                           **order.product_details)
 
         except InvalidDataError as ide:  # encountered error while processing
             order_error_message = str(ide)
