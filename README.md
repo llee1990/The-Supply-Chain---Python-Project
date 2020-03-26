@@ -68,5 +68,5 @@ A type of Exception
 
 ## Diagrams
 <ul> UML Class Diagram link: https://www.lucidchart.com/invitations/accept/82806647-624b-4402-9781-6f18fac06432 </ul>
-<ul> UML Sequence Diagram link: https://www.lucidchart.com/documents/edit/c4555659-d80b-4497-874d-c74e84652854/0_0 </ul>
+<ul> UML Sequence Diagram link: https://www.lucidchart.com/invitations/accept/c5eedcf8-dabb-4d13-aa4c-a3b9249dd27c </ul>
 
