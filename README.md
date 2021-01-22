@@ -1,10 +1,3 @@
-# COMP3522_Assignment2 
-<p>Leon Lee A01062166 </p>
-<p>John Han A01064824 </p>
-<p> 2020/03/25 </p>
-<p> Set: 3T </p>
-
-
 # The Souvenuir Store 
 <p> This application simulates a sovenuir store system that is used by employees to manage inventory orders and transactions. The user can process web-orders, manage inventory, and generate daily transaction report based on orders. <p/>
 
